@@ -1,5 +1,5 @@
 import random
-secret_number = random.randint (1, 100)
+secret_number = random.randint (1, 10)
 
 print(
 """
@@ -22,4 +22,5 @@ while guess != secret_number:
         print("Too low muggle, guess again!")
         guess = int(input("Guess a number: "))
         
+
 print('"Argh, drats! Curse you mortal, now I shall disintegrate into comsic ash! AAAAAAAAA"\nYou have killed the wizard...')
