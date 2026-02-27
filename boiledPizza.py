@@ -9,7 +9,6 @@
 import time
 
 ingred = ["tomato", "mushroom", "cheese", "pepperoni", "pineapple"]
-prep = "Prepared"
 
 i = 0
 
@@ -20,7 +19,7 @@ while i < 99:
         for seconds in range(1, 4):
             print(f"{seconds} seconds.")
             time.sleep(1)
-        print(f"{prep} {ingred[i]}.")
+        print(f"Prepared {ingred[i]}.")
         i += 1
         time.sleep(1)
     elif i > 0 and i < 4:
@@ -29,7 +28,7 @@ while i < 99:
         for seconds in range(1, 4):
             print(f"{seconds} seconds.")
             time.sleep(1)
-        print(f"{prep} {ingred[i]}.")
+        print(f"Prepared {ingred[i]}.")
         i += 1
         time.sleep(1)
     elif i == 4:
@@ -38,7 +37,7 @@ while i < 99:
         for seconds in range(1, 4):
             print(f"{seconds} seconds.")
             time.sleep(1)
-        print(f"{prep} {ingred[i]}.")
+        print(f"Prepared {ingred[i]}.")
         i += 1
         time.sleep(1)
     else:
