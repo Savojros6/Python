@@ -12,7 +12,7 @@ ingred = ["tomato", "mushroom", "cheese", "pepperoni", "pineapple"]
 
 i = 0
 
-while i < 99:
+while True:
     if i == 0:
         print(f"First, we boil {ingred[i]} into the soup.")
         time.sleep(1)
@@ -43,3 +43,4 @@ while i < 99:
     else:
         print("Mama mia, don't you just love authentic italian cuisine?")
         break
+
