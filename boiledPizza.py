@@ -6,19 +6,41 @@
 # Print the final list
 # Add a while loop that simulates a cooking countdown from 3
 
+import time
+
 ingred = ["tomato", "mushroom", "cheese", "pepperoni", "pineapple"]
-prep = "prepared"
+prep = "Prepared"
 
 i = 0
-i2 = 0
 
-while i == 0:
-    if i2 < 5:
-        print(f"first we boil {ingred[i2]} into the soup")
-        i2 += 1
+while i < 99:
+    if i == 0:
+        print(f"First, we boil {ingred[i]} into the soup.")
+        time.sleep(1)
+        for seconds in range(1, 4):
+            print(f"{seconds} seconds.")
+            time.sleep(1)
+        print(f"{prep} {ingred[i]}.")
+        i += 1
+        time.sleep(1)
+    elif i > 0 and i < 4:
+        print(f"Then we boil {ingred[i]} into the soup.")
+        time.sleep(1)
+        for seconds in range(1, 4):
+            print(f"{seconds} seconds.")
+            time.sleep(1)
+        print(f"{prep} {ingred[i]}.")
+        i += 1
+        time.sleep(1)
+    elif i == 4:
+        print(f"Finally, we boil {ingred[i]} into the soup.")
+        time.sleep(1)
+        for seconds in range(1, 4):
+            print(f"{seconds} seconds.")
+            time.sleep(1)
+        print(f"{prep} {ingred[i]}.")
+        i += 1
+        time.sleep(1)
     else:
+        print("Mama mia, don't you just love authentic italian cuisine?")
         break
-
-for i in range(0, len(ingred)):
-    print(prep, ingred[i])
-    i += 1
