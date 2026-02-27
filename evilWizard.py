@@ -2,8 +2,6 @@ from random import randint
 secret_number = randint (1, 10)
 counter = 0
 
-# I don't fully understand random, but randint allows me to generate a random integer in a range.
-
 print(
 """
 +================================+
@@ -17,6 +15,32 @@ print(
 +================================+
 """)
 
+while True:
+    try:
+        guess = int(input("Guess a number: "))
+        if guess == secret_number and counter == 0:
+            print('"Gadzooks! How could you have know the Legendary Secret Number already?! You MUST have cheated!"\n"The wizard malds as he slowly transmogrifies into a corn cob"')
+            break
+        elif guess == secret_number and counter > 0:
+            print('"Argh, drats! Curse you mortal, now I shall disintegrate into comsic ash! AAAAAAAAA"\nYou have killed the wizard...')
+            break
+        elif counter == 2 and guess != secret_number:
+            print('"Too late FOOL, you LOSE! Prepare to face my OMEGA BEANS!!!"\nYou were disintegrated by the wizards majykks...')
+            break
+        elif guess > secret_number:
+            print("Too high muggle, guess again!")
+            counter += 1
+        else:
+            print("Too low muggle, guess again!")
+            counter += 1
+    except ValueError:
+        print("Foolish muggle! That's not even a real number! Try again!!!")
+        
+# It would also be desirable to add the ability to account for certain
+# special strings, ie; saying no and refusing to play.
+
+# It would be nice if the wizard refused to accept guesses of the same number multiple times.
+    
 # ====================================================================#
 # 'try' and 'except' are an exception handling mechanism.             |
 # 'try' attempts to run subsequent code, but if it fails              |
@@ -31,39 +55,3 @@ print(
 #                                                                     |
 # 'ValueError' being there isn't actually necessary its just clearer. |
 # ====================================================================#
-
-while True:
-    try:
-        guess = int(input("Guess a number: "))
-        break
-    except ValueError:
-        print("Foolish muggle! That's not even a real number! Try again!!!")      
-        
-# Error: This exception handler only accounts for strings on the very first guess, not
-# on every guess. It would also be desirable to add the ability to account for certain
-# special strings, ie; saying no and refusing to play
-    
-while guess != secret_number:   
-    if guess == secret_number and counter == 0:
-        print('"Gadzooks! How could you have know the Legendary Secret Number already?! You MUST have cheated!"\n"The wizard malds as he slowly transmogrifies into a corn cob"')
-        break
-    elif guess == secret_number and counter > 0:
-        print('"Argh, drats! Curse you mortal, now I shall disintegrate into comsic ash! AAAAAAAAA"\nYou have killed the wizard...')
-        break
-    elif counter == 2 and guess != secret_number:
-        print('"Too late FOOL, you LOSE! Prepare to face my OMEGA BEANS!!!"\nYou were disintegrated by the wizards majykks...')
-        break
-    elif guess > secret_number:
-        print("Too high muggle, guess again!")
-        guess = int(input("Guess a number: "))
-        counter += 1
-    else:
-        print("Too low muggle, guess again!")
-        guess = int(input("Guess a number: "))
-        counter += 1
-        
-# Tbh, I don't really understand what 'break' actually does. I'll have to doublecheck.
-
-# Error: This code appears to not print ANYTHING in the case where you guess the correct number
-# on your third attempt, I'll have to patchfix it later
-
