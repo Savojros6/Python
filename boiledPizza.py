@@ -22,7 +22,7 @@ while i < 99:
         print(f"Prepared {ingred[i]}.")
         i += 1
         time.sleep(1)
-    elif i > 0 and i < 4:
+    elif i > 0 and i < len(ingred):
         print(f"Then we boil {ingred[i]} into the soup.")
         time.sleep(1)
         for seconds in range(1, 4):
@@ -31,7 +31,7 @@ while i < 99:
         print(f"Prepared {ingred[i]}.")
         i += 1
         time.sleep(1)
-    elif i == 4:
+    elif i == len(ingred) - 1:
         print(f"Finally, we boil {ingred[i]} into the soup.")
         time.sleep(1)
         for seconds in range(1, 4):
