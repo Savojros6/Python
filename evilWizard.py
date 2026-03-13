@@ -7,10 +7,17 @@ disagree	= ["no", "nope", "nah", "never", "stop", "quit", "exit", "don't", "disa
 explicit	= ["fuck you", "kys", "gay", "bitch", "kill yourself", "go fuck yourself"]
 prevGuess	= []
 
+def gameOver():
+    print(f'Previous guesses: {prevGuess}')
+    del prevGuess[:]
+    counter = 0
+    
+# It would be nice if it prompted you to try again.
+
 print(
 """
 +================================+
-| Welcome to my game, muggle!    |
+| Welcome to my game, mortal!    |
 | Enter an integer number        |
 | and guess what number I've     |
 | picked for you.                |
@@ -51,27 +58,33 @@ while True:
         guess = int(guess)
         
         if guess == secret_number and counter == 0:
+            prevGuess.append(guess)
             print('"Gadzooks! How could you have know the Legendary Secret Number already?! You MUST have cheated!"\n"The wizard malds as he slowly transmogrifies into a corn cob"')
+            gameOver()
             break
         
         elif guess == secret_number and counter > 0:
+            prevGuess.append(guess)
             print('"Argh, drats! Curse you mortal, now I shall disintegrate into comsic ash! AAAAAAAAA"\nYou have killed the wizard...')
+            gameOver()
             break
         
         elif counter == 2 and guess != secret_number:
+            prevGuess.append(guess)
             print('"Too late FOOL, you LOSE! Prepare to face my OMEGA BEANS!!!"\nYou were disintegrated by the wizards majykks...')
+            gameOver()
             break
         
         elif guess in prevGuess:
             print("You already SAID that one!! >:(")
         
         elif guess > secret_number:
-            print("Too high muggle, guess again!")
+            print("Too high mortal, guess again!")
             prevGuess.append(guess)
             counter += 1
             
         elif guess < secret_number:
-            print("Too low muggle, guess again!")
+            print("Too low mortal, guess again!")
             prevGuess.append(guess)
             counter += 1
         
@@ -79,9 +92,7 @@ while True:
             print("???")
             
     except ValueError:
-        print("Foolish muggle! That's not even a real number! Try again!!!")        
-
-# It would be nice if it prompted you to try again.
+        print("Foolish mortal! That's not even a real number! Try again!!!")        
     
 # ====================================================================#
 # 'try' and 'except' are an exception handling mechanism.             |
@@ -96,4 +107,4 @@ while True:
 # e.g. attempting to turn a string into an integer when it can't be.  |
 #                                                                     |
 # 'ValueError' being there isn't actually necessary its just clearer. |
-# ====================================================================#   
+# ====================================================================# 
