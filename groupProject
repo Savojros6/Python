@@ -1,9 +1,23 @@
+# Okay so here is the most important thing to know about actually USING this code with other code blocks
+# This code fills slot 0 of each of the 'categories' lists with the NAME of that category, so it
+# looks better on the big chart I setup. For that reason, to actually get the NUMBERS you gotta
+# actually start at 1. rent[1], food[1], etc
+#
+
+# == USING MY INDEX==
+# you can pull values from the 'board' index with board[i][j]
+# with j being the month and i being the category.
+# 
+
+
 # I'm using these for formatting/kickstarting the program.
 categories		= ["Rent", "Food", "Utilities", "Insurance", "Subscri...", "Enterta...", "Other"]
 frequency		= ["Daily", "Weekly", "Biweekly", "Monthly", "Yearly"]
-disagree		= ["n", "no", "nope", "nah", "never", "stop", "quit", "exit", "don't", "disagree"]
 gregCal			= ["January", "February", "March", "April", "May", "June","July", "August",
                    "September", "October", "November", "December"]
+
+agree			= [ "y", "yes", "okay", "ok", "sure", "alright", "agree", "accept", "do", "yeah", "ok fine", "okay fine"]
+disagree		= ["n", "no", "nope", "nah", "never", "stop", "quit", "exit", "don't", "disagree"]
 
 # The actual data is stored in these lists.
 rent			= []
@@ -20,17 +34,29 @@ now = 0
 argue = 0
 # This is a really hacky fix to a really annoying error
 
+# tbh, I forget why 'argue' isn't breaking this code.
+# ideally 'now' and 'argue' would represent the same shit, but it made tryFloat()
+# a function I made to simplify monthlyExpenses() break? I think?
+# I'm pretty sure if anything breaks from using this program too long
+# argue will cause it, but I haven't found any bugs with it yet.
+
+finish = False
+# if this turns to True, the script stops.
+
+first  = True
+# checks if you've filled out any previous months.
+
 gregCalTwo = len(gregCal) + 1
-# just made a few things faster
+# I need it to be 1 longer since i'm using 0 for the chart
 
 board = [ [0 for userMonths in range(gregCalTwo)] for userPurchases in range(len(categories)) ]
-# This makes the entire 
 
-def initialize(now):
+def initialize(i):
     for a in range(len(categories)):
-        board[a][now] = categories[a]
-    now += 1
+        board[a][i] = categories[a]
 # This is so the fancy spreadsheet has the categories on the side.
+# i = now, which would be 0 at this time.
+# this is why the categories start at 1.
 
 def displayBoard(board):
     
@@ -68,29 +94,32 @@ def tryFloat (i, j, a):
         print("Only integers or floats please.")
 
 def monthlyExpenses(now):
-    print("""
+    j = now + 1
+    global argue
+    
+    if first == True:
+        print("""
 Alright, now we need to know how much you spend per month.
 We're going to go over different kinds of expenses.
 Such as rent, food, utilities, insurance, subscriptions,
 entertainment, and anything else you might've spent your money on.
 Please answer the following questions.
 """)
-    j = now + 1
-    global argue
-#     for i in range(len(categories)):
+    else:
+        print("You know the drill.")
+
     while True:
         try:
             if argue == 4:
-                a = input("How much have you spent on Subscription services? ")
+                a = input("How much have you spent on Subscription services? ").strip()
                 tryFloat (argue, j, a)
             elif argue == 5:
-                a = input("How much do you spend on Entertainment? ")
+                a = input("How much do you spend on Entertainment? ").strip()
                 tryFloat (argue, j, a)
             elif argue < len(categories):
-                a = input(f"How much do you spend on {categories[argue]}? ")
+                a = input(f"How much do you spend on {categories[argue]}? ").strip()
                 tryFloat (argue, j, a)
             else:
-                now += 1
                 argue = 0
                 break
         except ValueError:
@@ -105,9 +134,9 @@ def whoAmI():
     name 		= input("What is your name?: ")
     interval 	= input(f"Alright {name}, how often do you get paid? (Daily, Weekly, Biweekly, Monthly, Yearly): ").strip()
     
-        #     name 		= "Debugger"
+#     name 		= "Me"
 #     interval 	= "Daily"
-#     income		= "Yes"
+#     income	= "9001"
 
     try:
         if interval.lower() == frequency[0]:
@@ -118,8 +147,10 @@ def whoAmI():
             print("Alright, you get paid biweekly.")
         elif interval.lower() == frequency[3]:
             print("Alright, you get paid monthly.")
-        else:
+        elif interval.lower() == frequency[4]:
             print("Alright, you get paid yearly.")
+        else:
+            print("Speeding through, bugtesting is annoying.")
     except ValueError:
         print("Sorry, that isn't one of the supported options. Please try again.")
         print("(Options are: Daily, Weekly, Biweekly, Monthly, Yearly.)")
@@ -127,10 +158,40 @@ def whoAmI():
     
     income 		= input("How much are you paid?: ")
     
+def keepGoing():
+    while True:
+        global finish, first
+        print("", sep="")
+        q = input("Do you wish to keep using this program? (Y/N)").strip()
+        if q.lower() in agree:
+            print("Let's move onto next Month then.")
+            first = False
+            now =+ 1
+            break
+        elif q.lower() in disagree:
+            print("Alright then, closing the program now.")
+            first = False
+            finish = True
+            break
+        else:
+            print("Sorry, didn't quite understand that.")
+    
 def master():
+    global now
     whoAmI()
     initialize(now)
-    monthlyExpenses(now)
-    displayBoard(board)
-    
+    while True:
+        if finish == False:
+            monthlyExpenses(now)
+            displayBoard(board)
+            now += 1
+            keepGoing()
+            continue
+        else:
+            break
+        
 master()
+
+# Later on, I think I'll do some shit to get it so you can pick the starting month and handle what happens after you exceed 12 months?
+# It probably just breaks tbh lmfao.
+# W/e I'll fix it later.
