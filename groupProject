@@ -1,72 +1,136 @@
-name 		= ("What is your name?: ")
-# interval 	= ("How often do you get paid: "\n"("Daily, Weekly, Monthly") 
-# income 		= input("How much are you paid?: ")
+# I'm using these for formatting/kickstarting the program.
+categories		= ["Rent", "Food", "Utilities", "Insurance", "Subscri...", "Enterta...", "Other"]
+frequency		= ["Daily", "Weekly", "Biweekly", "Monthly", "Yearly"]
+disagree		= ["n", "no", "nope", "nah", "never", "stop", "quit", "exit", "don't", "disagree"]
+gregCal			= ["January", "February", "March", "April", "May", "June","July", "August",
+                   "September", "October", "November", "December"]
 
-#day month year, might be useful for tracking
-
-# for i in range(len(year)):
-#     for j in range(len(month)):
-#         myCalendar[i][j][k] = (ranks[i] + ' of ' + suits[j])
-
-# month 	= input("What month is it?: ")
-# date	= input("What day of the month is it?: \n(e.g. 1st, 2nd, etc)")
-# year	= input("What year is it?: ")
-
-income = ("How often are you paid weekly?: ")
-
-
-week = 0
-
-rent		= []
-food		= []
-utilities	= []
-insurance	= []
+# The actual data is stored in these lists.
+rent			= []
+food			= []
+utilities		= []
+insurance		= []
 subscriptions	= []
 entertainment	= []
 other			= []
 
-answer = 0
+now = 0
+# This represents the current week/month, whichever its supposed to be
 
-while True:
-    print("Please fill out how much you spent on the following: ")
+argue = 0
+# This is a really hacky fix to a really annoying error
+
+gregCalTwo = len(gregCal) + 1
+# just made a few things faster
+
+board = [ [0 for userMonths in range(gregCalTwo)] for userPurchases in range(len(categories)) ]
+# This makes the entire 
+
+def initialize(now):
+    for a in range(len(categories)):
+        board[a][now] = categories[a]
+    now += 1
+# This is so the fancy spreadsheet has the categories on the side.
+
+def displayBoard(board):
+    
+    print("+-----------" * (len(gregCal)+1),"+", sep="")
+    print("| XXXXXXXXX ", end="")        
+    for a in range(len(gregCal)):
+        print("| ", f"{gregCal[a]}", " " * (10 - len(gregCal[a])), sep="", end="")
+    print("|")
+    print("+-----------" * (len(gregCal)+1),"+", sep="", end="")
+    # I might've went a little overboard making it look half decent, but w/e, noones gunna complain
+    # it looks too good.
+    
+    for i in range(len(categories)):
+        print("", sep="")
+        # Printing here is how it creates a new line.
+        k = len(gregCal) + 1
+        for j in range(k):
+            print("| ", str(board[i][j]), " " * (10 - len(str(board[i][j]))), sep="", end="")
+        print("|")
+        print("+-----------" * (len(gregCal)+1),"+", sep="", end="")
+        
+            # This does not create a new line because of the end="" section.
+            
+def tryFloat (i, j, a):
+    global argue
+    try:
+        if a.lower() in disagree:
+            print("Fine don't, its pretty weird to commission an app you didn't even want to use but fine >:(.")
+        else:
+            a = float(a)
+            board[i][j] = a
+            argue += 1
+            
+    except ValueError:
+        print("Only integers or floats please.")
+
+def monthlyExpenses(now):
+    print("""
+Alright, now we need to know how much you spend per month.
+We're going to go over different kinds of expenses.
+Such as rent, food, utilities, insurance, subscriptions,
+entertainment, and anything else you might've spent your money on.
+Please answer the following questions.
+""")
+    j = now + 1
+    global argue
+#     for i in range(len(categories)):
+    while True:
+        try:
+            if argue == 4:
+                a = input("How much have you spent on Subscription services? ")
+                tryFloat (argue, j, a)
+            elif argue == 5:
+                a = input("How much do you spend on Entertainment? ")
+                tryFloat (argue, j, a)
+            elif argue < len(categories):
+                a = input(f"How much do you spend on {categories[argue]}? ")
+                tryFloat (argue, j, a)
+            else:
+                now += 1
+                argue = 0
+                break
+        except ValueError:
+            continue
+
+# This writes the users answers into the current months section of the index.
+        
+def whoAmI():
+    global name, interval, income
+    # need these to work everywhere
+    
+    name 		= input("What is your name?: ")
+    interval 	= input(f"Alright {name}, how often do you get paid? (Daily, Weekly, Biweekly, Monthly, Yearly): ").strip()
+    
+        #     name 		= "Debugger"
+#     interval 	= "Daily"
+#     income		= "Yes"
 
     try:
-        answer 		= input("How much have you spent on rent this week?: ")
-        answer 		= float(answer)      
-        rent.append(answer)    
+        if interval.lower() == frequency[0]:
+            print("Alright, you get paid daily.")
+        elif interval.lower() == frequency[1]:
+            print("Alright, you get paid weekly.")
+        elif interval.lower() == frequency[2]:
+            print("Alright, you get paid biweekly.")
+        elif interval.lower() == frequency[3]:
+            print("Alright, you get paid monthly.")
+        else:
+            print("Alright, you get paid yearly.")
     except ValueError:
-        continue
+        print("Sorry, that isn't one of the supported options. Please try again.")
+        print("(Options are: Daily, Weekly, Biweekly, Monthly, Yearly.)")
+        # yeah if-else cascades are hacky but I don't care atm tbh lmfao
     
-     try:
-        utilities[week] 	= input("How much have you spent on utilities this week?: ")
-        answer 		= float(answer)      
-        utilities.append(answer)    
-    except ValueError:
-        continue
+    income 		= input("How much are you paid?: ")
     
-    try:
-        answer 		= input("How much have you spent on insurance this week?: ")
-        answer 		= float(answer)      
-        rent.insurance(answer)    
-    except ValueError:
-        continue
+def master():
+    whoAmI()
+    initialize(now)
+    monthlyExpenses(now)
+    displayBoard(board)
     
-    try:
-        answer 		= input("How much have you spent on subscriptions this week: ")
-        answer 		= float(answer)      
-        rent.subscriptions(answer)    
-    except ValueError:
-        continue 
-        
-    try:
-        answer 		= input("How much have you spent on anything else?: ")
-        answer 		= float(answer)      
-        rent.other(answer)    
-    except ValueError:
-        break
-        
-expenses = rent[week] + food[week] + utilities[week] + 
-    
-#     print("e.g. Rent, food, utilities, subscriptions, entertainment, other")
-#     
-#     if subject == "rent
+master()
