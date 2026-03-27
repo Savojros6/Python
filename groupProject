@@ -33,27 +33,39 @@ while True:
     try:
         answer 		= input("How much have you spent on rent this week?: ")
         answer 		= float(answer)      
-        rent.append(answer)
-        
+        rent.append(answer)    
     except ValueError:
         continue
     
      try:
         utilities[week] 	= input("How much have you spent on utilities this week?: ")
         answer 		= float(answer)      
-        utilities.append(answer)
+        utilities.append(answer)    
     except ValueError:
         continue
+    
+    try:
+        answer 		= input("How much have you spent on insurance this week?: ")
+        answer 		= float(answer)      
+        rent.insurance(answer)    
+    except ValueError:
+        continue
+    
+    try:
+        answer 		= input("How much have you spent on subscriptions this week: ")
+        answer 		= float(answer)      
+        rent.subscriptions(answer)    
+    except ValueError:
+        continue 
         
-
-#     food[week] 			= input("How much have you spent on food this week: ")
-#     utilities[week] 	= input("How much have you spent on utilities this week?: ")
-#     insurance[week]		= input("How much have you spent on insurance this week?: ")
-#     subscription[week]	= input("How much have you spent on subscriptions this week: ")
-#     other[week]			= input("How much have you spent on anything else?: ")
-    
-print(f"{rent[0]}")    
-    
+    try:
+        answer 		= input("How much have you spent on anything else?: ")
+        answer 		= float(answer)      
+        rent.other(answer)    
+    except ValueError:
+        break
+        
+expenses = rent[week] + food[week] + utilities[week] + 
     
 #     print("e.g. Rent, food, utilities, subscriptions, entertainment, other")
 #     
