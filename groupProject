@@ -1,0 +1,60 @@
+name 		= ("What is your name?: ")
+# interval 	= ("How often do you get paid: "\n"("Daily, Weekly, Monthly") 
+# income 		= input("How much are you paid?: ")
+
+#day month year, might be useful for tracking
+
+# for i in range(len(year)):
+#     for j in range(len(month)):
+#         myCalendar[i][j][k] = (ranks[i] + ' of ' + suits[j])
+
+# month 	= input("What month is it?: ")
+# date	= input("What day of the month is it?: \n(e.g. 1st, 2nd, etc)")
+# year	= input("What year is it?: ")
+
+income = ("How often are you paid weekly?: ")
+
+
+week = 0
+
+rent		= []
+food		= []
+utilities	= []
+insurance	= []
+subscriptions	= []
+entertainment	= []
+other			= []
+
+answer = 0
+
+while True:
+    print("Please fill out how much you spent on the following: ")
+
+    try:
+        answer 		= input("How much have you spent on rent this week?: ")
+        answer 		= float(answer)      
+        rent.append(answer)
+        
+    except ValueError:
+        continue
+    
+     try:
+        utilities[week] 	= input("How much have you spent on utilities this week?: ")
+        answer 		= float(answer)      
+        utilities.append(answer)
+    except ValueError:
+        continue
+        
+
+#     food[week] 			= input("How much have you spent on food this week: ")
+#     utilities[week] 	= input("How much have you spent on utilities this week?: ")
+#     insurance[week]		= input("How much have you spent on insurance this week?: ")
+#     subscription[week]	= input("How much have you spent on subscriptions this week: ")
+#     other[week]			= input("How much have you spent on anything else?: ")
+    
+print(f"{rent[0]}")    
+    
+    
+#     print("e.g. Rent, food, utilities, subscriptions, entertainment, other")
+#     
+#     if subject == "rent
