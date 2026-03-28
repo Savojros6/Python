@@ -51,7 +51,7 @@ for a in range(len(gregCal)):
     
 realCal = [i + 1 for i in range(len(gregCal))]
 
-agree			= [ "y", "yes", "okay", "ok", "sure", "alright", "agree", "accept", "do", "yeah", "ok fine", "okay fine"]
+agree			= ["y", "yes", "okay", "ok", "sure", "alright", "agree", "accept", "do", "yeah", "ok fine", "okay fine"]
 disagree		= ["n", "no", "nope", "nah", "never", "stop", "quit", "exit", "don't", "disagree"]
 
 # The actual data is stored in these lists.
