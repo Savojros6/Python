@@ -2,7 +2,6 @@
 # This code fills slot 0 of each of the 'categories' lists with the NAME of that category, so it
 # looks better on the big chart I setup. For that reason, to actually get the NUMBERS you gotta
 # actually start at 1. rent[1], food[1], etc
-#
 
 # == USING MY INDEX==
 # you can pull values from the 'board' index with board[i][j]
@@ -75,11 +74,7 @@ finish = False
 first  = True
 # checks if you've filled out any previous months.
 
-gregCalTwo = [0 for x in range(len(gregCal)+1)]
-
-# I need it to be 1 longer since i'm using 0 for the chart
-
-board = [ [0 for userMonths in range((len(gregCalTwo)))] for userPurchases in range(len(categories)) ]
+board = [ [0 for userMonths in range(len(gregCal)+1)] for userPurchases in range(len(categories)) ]
 
 def whoAmI(p):
     global name, interval, income, thisMonth
@@ -94,8 +89,7 @@ def whoAmI(p):
     if p == True:
         u = input("What month is it right now? ")
         thisMonth = u
-        # This part has no error handling at the moment, its a bit of a problem.
-        
+        # This part has no error handling at the moment, its a bit of a problem.        
         
     interval = input(f"Alright {name}, how often do you get paid? (Daily, Weekly, Biweekly, Monthly, Yearly): ").strip()
     while True:
@@ -188,7 +182,6 @@ def tryFloat (i, j, a):
             
     except ValueError:
         print("Only integers or floats please.")
-
 
 # This writes the users answers into the current months section of the index.
 def monthlyExpenses(now):
