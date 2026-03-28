@@ -42,11 +42,6 @@ monthDict = {
     # December
     "12": "12", "December": "12", "Dec": "12", "december": "12", "dev": "12",
     }
-
-lesserGreg		= [0 for x in range(len(gregCal))]
-for a in range(len(gregCal)):
-    m = gregCal[a]
-    lesserGreg[a] = m.lower()
     
 realCal = [i + 1 for i in range(len(gregCal))]
 
