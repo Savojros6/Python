@@ -50,7 +50,7 @@ realCal = [i + 1 for i in range(len(gregCal))]
 agree			= ["y", "yes", "okay", "ok", "sure", "alright", "agree", "accept", "do", "yeah", "ok fine", "okay fine", "fine"]
 disagree		= ["n", "no", "nope", "nah", "never", "stop", "quit", "exit", "don't", "disagree", "object", "protest"]
 
-# The actual data is stored in these lists.
+# The actual data SHOULD be stored in these lists but is not because its BROKEN so ignore these.
 rent			= []
 food			= []
 utilities		= []
@@ -60,10 +60,9 @@ entertainment	= []
 other			= []
 
 now = 0
+nowPlus = now + 1
 # This represents the current week/month, whichever its supposed to be
-
-argue = 0
-# This is a really hacky fix to a really annoying error
+# nowPlus is needed for a few things.
 
 finish = False
 # if this turns to True, the script stops.
@@ -268,24 +267,28 @@ def days_in_month(year, month):
 #######################
 
 # This exists to make monthlyExpenses easier to edit
-def tryFloat (i, j, a):
-    global argue
+def tryFloat (putArgue, putNowPlus, a):
+    
+    # The intention here is to advance how far ahead in the list of stored data
+    # the program reads by calculating the difference between the starting year
+    # and the current year and multiplying 
+#     if firstYear != thisYear:
+#         b = thisYear - firstYear
+        
+    
     try:
         if a.lower() in disagree:
             print("Fine don't, its pretty weird to commission an app you didn't even want to use but fine >:(.")
         else:
             a = float(a)
-            board[i][j] = a
-            argue += 1
-            
+            board[putArgue][nowPlus] = a
+            print(f"You have entered: {board[putArgue][nowPlus]}")
+            putArgue += 1
     except ValueError:
         print("Only integers or floats please.")
 
 # This writes the users answers into the current months section of the index.
-def monthlyExpenses(w):
-    global argue
-    j = w + 1
-    
+def monthlyExpenses(now):    
     if first == True:
         print("""
 Alright, now we need to know how much you spend per month.
@@ -299,22 +302,23 @@ Please answer the following questions.
 
     while True:
         try:
-            if argue == 4:
-                a = input("How much have you spent on Subscription services? ").strip()
-                tryFloat (argue, j, a)
-            elif argue == 5:
-                a = input("How much do you spend on Entertainment? ").strip()
-                tryFloat (argue, j, a)
-            elif argue < len(categories):
-                a = input(f"How much do you spend on {categories[argue]}? ").strip()
-                tryFloat (argue, j, a)
-            else:
-                argue = 0
-                break
+            for argue in range (len(categories)):
+                if argue == 4:
+                    a = input("How much have you spent on Subscription services? ").strip()
+                    tryFloat (argue, nowPlus, a)
+                elif argue == 5:
+                    a = input("How much do you spend on Entertainment? ").strip()
+                    tryFloat (argue, nowPlus, a)
+                elif argue < len(categories):
+                    a = input(f"How much do you spend on {categories[argue]}? ").strip()
+                    tryFloat (argue, nowPlus, a)
+                else:
+                    continue
         except ValueError:
             continue
+        break
         
-def displayBoard(board):
+def displayBoard(board):   
     print("+-----------" * (len(realCal)+1),"+", sep="")
     print(f"| {thisYear}      ", end="")        
     for a in range(len(realCal)):
@@ -344,16 +348,19 @@ def checkOverspending(payRate, income, now, thisYear):
     
     global savings
     
-    # now is the month index (0-based), but your data starts at column 1
-    month_index = now + 1
-        
-    # Yeah 'now' ended up being a bit of a clusterfuck
-    # like I wrote before I had some trouble with 'now' during tryFloat()
-    # I might fix it later. ~Stanley
+#     # now is the month index (0-based), but your data starts at column 1
+#     month_index = now + 1
+#         
+#     # Yeah 'now' ended up being a bit of a clusterfuck
+#     # like I wrote before I had some trouble with 'now' during tryFloat()
+#     # I might fix it later. ~Stanley
+#     
+#     # as a patch fix im revising any values that are just 'now + 1'
+#     # to refer to 'nowPlus' 
 
     total_spent = 0
     for i in range(len(categories)):
-        value = board[i][month_index]
+        value = board[i][nowPlus]
         if isinstance(value, (int, float)):
             total_spent += value
             # Oh, I havent seen the word 'isinstance' before, I'll have to learn what that does later. ~Stanley
@@ -420,6 +427,10 @@ def keepGoing():
             print("Sorry, didn't quite understand that.")
             
 def fluctuate():
+    global newYear
+    
+    nowPlus = now + 1
+    
     if first == False:
         
         # This is supposed to allow it to cycle to a new year without breaking
@@ -434,7 +445,6 @@ def fluctuate():
         # However: this is very annoying to test
         
         if now > 11:
-            nowPlus 	= now + 1
             newYear		= nowPlus // 12
             thisYear 	= firstYear + newYear
             for i in range (1, len(gregCal)+1):
@@ -465,7 +475,7 @@ def fluctuate():
                 print("Sorry, didn't quite understand that.")
     
 def master():
-    global finish, first, now
+    global finish, first, now, nowPlus
     
     whoAmI()
     monthQ()
@@ -487,10 +497,23 @@ def master():
     while True:
         if finish == False:
             fluctuate()
-            monthlyExpenses(now)
+            monthlyExpenses(nowPlus)
             displayBoard(board)
+            
+#             print(f"rent: {rent}")
+#             print(f"food: {food}")
+#             print(f"utilities: {utilities}")
+#             print(f"insurance: {insurance}")
+#             print(f"subscriptions: {subscriptions}")
+#             print(f"entertainment: {entertainment}")
+#             print(f"other: {other}")
+#             # debugging stuff
+#             # Yeah fuck as I suspected I'm not actually writing the data where I thought I was lol.
+#             # I'll fix this later
+            
             checkOverspending(payRate, income, now, thisYear)
             now += 1
+            nowPlus = now + 1
             keepGoing()
             continue
         else:
