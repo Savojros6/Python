@@ -2,22 +2,51 @@
 # This code fills slot 0 of each of the 'categories' lists with the NAME of that category, so it
 # looks better on the big chart I setup. For that reason, to actually get the NUMBERS you gotta
 # actually start at 1. rent[1], food[1], etc
-#
 
 # == USING MY INDEX==
 # you can pull values from the 'board' index with board[i][j]
 # with j being the month and i being the category.
-# 
-
 
 # I'm using these for formatting/kickstarting the program.
 categories		= ["Rent", "Food", "Utilities", "Insurance", "Subscri...", "Enterta...", "Other"]
-frequency		= ["Daily", "Weekly", "Biweekly", "Monthly", "Yearly"]
-gregCal			= ["January", "February", "March", "April", "May", "June","July", "August",
+frequency		= ["daily", "weekly", "biweekly", "monthly", "yearly"]
+gregCal			= ["January", "February", "March", "April", "May", "June", "July", "August",
                    "September", "October", "November", "December"]
 
-agree			= [ "y", "yes", "okay", "ok", "sure", "alright", "agree", "accept", "do", "yeah", "ok fine", "okay fine"]
-disagree		= ["n", "no", "nope", "nah", "never", "stop", "quit", "exit", "don't", "disagree"]
+# Yes I made a whole dictionary just to convert the months to numbers
+# However it will make receiving more inputs easier
+# tbh i didnt know how to use a dictionary before now lol
+monthDict = {
+    # January
+    "1": "1", "January": "1", "Jan": "1", "january": "1", "jan": "1",
+    # February
+    "2": "2", "February": "2", "Feb": "2", "february": "2", "feb": "2",
+    # March
+    "3": "3", "March": "3", "Mar": "3", "march": "3", "mar": "3",
+    # April
+    "4": "4", "April": "4", "Apr": "4", "april": "4", "apr": "4",
+    # May
+    "5": "5", "May": "5", "may": "5",
+    # June
+    "6": "6", "June": "6", "Jun": "6", "june": "6", "jun": "6",
+    # July
+    "7": "7", "July": "7", "Jul": "7", "july": "7", "jul": "7",
+    # August
+    "8": "8", "August": "8", "Aug": "8", "august": "8", "aug": "8",
+    # September
+    "9": "9", "September": "9", "Sept": "9", "Sep": "9", "september": "9", "sept": "9", "sep": "9",
+    # October
+    "10": "10", "October": "10", "Oct": "10", "october": "10", "oct": "10",
+    # November
+    "11": "11", "November": "11", "Nov": "11", "november": "11", "nov": "11",
+    # December
+    "12": "12", "December": "12", "Dec": "12", "december": "12", "dec": "12",
+    }
+    
+realCal = [i + 1 for i in range(len(gregCal))]
+
+agree			= ["y", "yes", "okay", "ok", "sure", "alright", "agree", "accept", "do", "yeah", "ok fine", "okay fine", "fine"]
+disagree		= ["n", "no", "nope", "nah", "never", "stop", "quit", "exit", "don't", "disagree", "object", "protest"]
 
 # The actual data is stored in these lists.
 rent			= []
@@ -34,52 +63,90 @@ now = 0
 argue = 0
 # This is a really hacky fix to a really annoying error
 
-# tbh, I forget why 'argue' isn't breaking this code.
-# ideally 'now' and 'argue' would represent the same shit, but it made tryFloat()
-# a function I made to simplify monthlyExpenses() break? I think?
-# I'm pretty sure if anything breaks from using this program too long
-# argue will cause it, but I haven't found any bugs with it yet.
-
 finish = False
 # if this turns to True, the script stops.
 
 first  = True
 # checks if you've filled out any previous months.
 
-gregCalTwo = len(gregCal) + 1
-# I need it to be 1 longer since i'm using 0 for the chart
+board = [ [0 for userMonths in range(len(gregCal)+1)] for userPurchases in range(len(categories)) ]
 
-board = [ [0 for userMonths in range(gregCalTwo)] for userPurchases in range(len(categories)) ]
-
-def initialize(i):
-    for a in range(len(categories)):
-        board[a][i] = categories[a]
-# This is so the fancy spreadsheet has the categories on the side.
-# i = now, which would be 0 at this time.
-# this is why the categories start at 1.
-
-def displayBoard(board):
+def whoAmI(p):
+    global name, interval, income, thisMonth
     
-    print("+-----------" * (len(gregCal)+1),"+", sep="")
-    print("| XXXXXXXXX ", end="")        
-    for a in range(len(gregCal)):
-        print("| ", f"{gregCal[a]}", " " * (10 - len(gregCal[a])), sep="", end="")
-    print("|")
-    print("+-----------" * (len(gregCal)+1),"+", sep="", end="")
-    # I might've went a little overboard making it look half decent, but w/e, noones gunna complain
-    # it looks too good.
+#     name 		= "Me"
+#     thisMonth	= "March"
+#     interval 	= "Monthly"
+#     income		= "9001"
+#     # default values for debugging purposes
     
-    for i in range(len(categories)):
-        print("", sep="")
-        # Printing here is how it creates a new line.
-        k = len(gregCal) + 1
-        for j in range(k):
-            print("| ", str(board[i][j]), " " * (10 - len(str(board[i][j]))), sep="", end="")
-        print("|")
-        print("+-----------" * (len(gregCal)+1),"+", sep="", end="")
-        
-            # This does not create a new line because of the end="" section.
+    name = input("What is your name?: ")
+    if p == True:
+        u = input("What month is it right now? ")
+        thisMonth = u
+        # This part has no error handling at the moment, its a bit of a problem.
             
+    interval = input(f"Alright {name}, how often do you get paid? (Daily, Weekly, Biweekly, Monthly, Yearly): ").strip()
+    
+    while True:
+        try:
+            l = interval.lower()
+            if l == frequency[0]:
+                print("Alright, you get paid daily.")
+                break
+            elif l == frequency[1]:
+                print("Alright, you get paid weekly.")
+            elif l == frequency[2]:
+                print("Alright, you get paid biweekly.")
+                break
+            elif l == frequency[3]:
+                print("Alright, you get paid monthly.")
+                break
+            elif l == frequency[4]:
+                print("Alright, you get paid yearly.")
+                break
+            else:
+                print("???")
+        except ValueError:
+            print("Sorry, that isn't one of the supported options. Please try again.")
+            print("(Options are: Daily, Weekly, Biweekly, Monthly, Yearly.)")
+            
+    income = input("How much are you paid?: ")
+
+def keyRing(month):
+    global clockHand
+    redKey 		= month
+    blueKey		= monthDict[redKey]
+    clockHand	= blueKey
+    clockHand	= int(clockHand)
+    # This is to convert month names to numbers from monthDict
+
+def initialize(i, w):
+    
+#     print(f"name: {name}")
+#     print(f"interval: {interval}")
+#     print(f"thisMonth: {thisMonth}")
+#     print(f"income: {income}")
+#     print(f"clockHand: {clockHand}")
+#     # debugging stuff
+           
+    for a in range(len(categories)):   
+        board[a][i] = categories[a]            
+    # This is so the fancy spreadsheet has the categories on the side.
+    # i = now, which would be 0 at this time.
+    # this is why the categories start at 1.
+      
+    for x in range(len(gregCal)):
+        a = x - clockHand + 1
+        realCal[a] = gregCal[x]
+        # This is to update the order of the months so the current month is first
+        # This was a major pain in the ass to make.
+        
+#     print(f"realCal: {realCal}")
+#     print(f"gregCal: {gregCal}")
+#     # More debugging stuff
+
+# This exists to make monthlyExpenses easier to edit
 def tryFloat (i, j, a):
     global argue
     try:
@@ -93,6 +160,7 @@ def tryFloat (i, j, a):
     except ValueError:
         print("Only integers or floats please.")
 
+# This writes the users answers into the current months section of the index.
 def monthlyExpenses(now):
     j = now + 1
     global argue
@@ -124,39 +192,25 @@ Please answer the following questions.
                 break
         except ValueError:
             continue
-
-# This writes the users answers into the current months section of the index.
         
-def whoAmI():
-    global name, interval, income
-    # need these to work everywhere
+def displayBoard(board):
+    print("+-----------" * (len(realCal)+1),"+", sep="")
+    print("| XXXXXXXXX ", end="")        
+    for a in range(len(realCal)):
+        print("| ", f"{realCal[a]}", " " * (10 - len(realCal[a])), sep="", end="")
+    print("|")
+    print("+-----------" * (len(realCal)+1),"+", sep="", end="")
+    # I might've went a little overboard making it look half decent, but w/e, noones gunna complain
+    # it looks too good.
     
-    name 		= input("What is your name?: ")
-    interval 	= input(f"Alright {name}, how often do you get paid? (Daily, Weekly, Biweekly, Monthly, Yearly): ").strip()
-    
-#     name 		= "Me"
-#     interval 	= "Daily"
-#     income	= "9001"
-
-    try:
-        if interval.lower() == frequency[0]:
-            print("Alright, you get paid daily.")
-        elif interval.lower() == frequency[1]:
-            print("Alright, you get paid weekly.")
-        elif interval.lower() == frequency[2]:
-            print("Alright, you get paid biweekly.")
-        elif interval.lower() == frequency[3]:
-            print("Alright, you get paid monthly.")
-        elif interval.lower() == frequency[4]:
-            print("Alright, you get paid yearly.")
-        else:
-            print("Speeding through, bugtesting is annoying.")
-    except ValueError:
-        print("Sorry, that isn't one of the supported options. Please try again.")
-        print("(Options are: Daily, Weekly, Biweekly, Monthly, Yearly.)")
-        # yeah if-else cascades are hacky but I don't care atm tbh lmfao
-    
-    income 		= input("How much are you paid?: ")
+    for i in range(len(categories)):
+        print("", sep="")
+        # Printing here is how it creates a new line.
+        for j in range(len(realCal)+1):
+            print("| ", str(board[i][j]), " " * (10 - len(str(board[i][j]))), sep="", end="")
+        print("|")
+        print("+-----------" * (len(realCal)+1),"+", sep="", end="")
+        # This does not create a new line because of the end="" section.
     
 def keepGoing():
     while True:
@@ -178,8 +232,9 @@ def keepGoing():
     
 def master():
     global now
-    whoAmI()
-    initialize(now)
+    whoAmI(first)
+    keyRing(thisMonth)
+    initialize(now, thisMonth)
     while True:
         if finish == False:
             monthlyExpenses(now)
