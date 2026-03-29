@@ -71,48 +71,6 @@ first  = True
 
 board = [ [0 for userMonths in range(len(gregCal)+1)] for userPurchases in range(len(categories)) ]
 
-def whoAmI(p):
-    global name, interval, income, thisMonth
-    
-#     name 		= "Me"
-#     thisMonth	= "March"
-#     interval 	= "Monthly"
-#     income		= "9001"
-#     # default values for debugging purposes
-    
-    name = input("What is your name?: ")
-    if p == True:
-        u = input("What month is it right now? ")
-        thisMonth = u
-        # This part has no error handling at the moment, its a bit of a problem.
-            
-    interval = input(f"Alright {name}, how often do you get paid? (Daily, Weekly, Biweekly, Monthly, Yearly): ").strip()
-    
-    while True:
-        try:
-            l = interval.lower()
-            if l == frequency[0]:
-                print("Alright, you get paid daily.")
-                break
-            elif l == frequency[1]:
-                print("Alright, you get paid weekly.")
-            elif l == frequency[2]:
-                print("Alright, you get paid biweekly.")
-                break
-            elif l == frequency[3]:
-                print("Alright, you get paid monthly.")
-                break
-            elif l == frequency[4]:
-                print("Alright, you get paid yearly.")
-                break
-            else:
-                print("???")
-        except ValueError:
-            print("Sorry, that isn't one of the supported options. Please try again.")
-            print("(Options are: Daily, Weekly, Biweekly, Monthly, Yearly.)")
-            
-    income = input("How much are you paid?: ")
-
 def keyRing(month):
     global clockHand
     redKey 		= month
@@ -121,9 +79,88 @@ def keyRing(month):
     clockHand	= int(clockHand)
     # This is to convert month names to numbers from monthDict
 
-def initialize(i, w):
+def monthQ():
+    global thisMonth
+    while True:
+        try:
+            u = input("What month is it right now? ")
+            if u in monthDict:
+                thisMonth = u
+                break
+        except ValueError:
+            print("This is a required question, what's the month? ")    
+            # This part has no error handling at the moment, its a bit of a problem.
+            
+def yearQ():
+    global thisYear        
+    while True:
+        try:
+            v = input("What year is it right now? ")
+            v = int(v)
+            thisYear = v
+            break
+        except ValueError:
+            print("This is a required question, what's the year? ")
+            # This part has no error handling at the moment, its a bit of a problem.
     
+
+def wagesQ():
+    global interval, payRate
+    while True:
+        try:
+            interval = input(f"Alright {name}, how often do you get paid? (Daily, Weekly, Biweekly, Monthly, Yearly): ").strip()  
+            l = interval.lower()
+            if l == frequency[0]:
+                print("Alright, you get paid daily.")
+                payRate = 0
+                payRate = int(payRate)
+                break
+            elif l == frequency[1]:
+                print("Alright, you get paid weekly.")
+                payRate = 1
+                payRate = int(payRate)
+                break
+            elif l == frequency[2]:
+                print("Alright, you get paid biweekly.")
+                payRate = 2
+                payRate = int(payRate)
+                break
+            elif l == frequency[3]:
+                print("Alright, you get paid monthly.")
+                payRate = 3
+                payRate = int(payRate)
+                break
+            elif l == frequency[4]:
+                print("Alright, you get paid yearly.")
+                payRate = 4
+                payRate = int(payRate)
+                break
+        except ValueError:
+            print("Sorry, that isn't one of the supported options. Please try again.")
+            print("(Options are: Daily, Weekly, Biweekly, Monthly, Yearly.)")
+            
+def incomeQ():
+    global income
+    while True:
+        income = input(f"How much {interval.lower()} income do you receive?: ")   
+        try:
+            v = income
+            v = int(v)
+            income = v
+            break
+        except ValueError:
+            print(f"This is a required question, how much {interval.lower()} income do you receive? ")
+            # This part has no error handling at the moment, its a bit of a problem.
+
+def whoAmI():
+    global name, password
+    
+    name 		= input("Enter Username: ")
+    password 	= input("Enter Password: ")
+
+def initialize(i):
 #     print(f"name: {name}")
+#     print(f"password: {password}")
 #     print(f"interval: {interval}")
 #     print(f"thisMonth: {thisMonth}")
 #     print(f"income: {income}")
@@ -131,7 +168,7 @@ def initialize(i, w):
 #     # debugging stuff
            
     for a in range(len(categories)):   
-        board[a][i] = categories[a]            
+        board[a][i] = categories[a]           
     # This is so the fancy spreadsheet has the categories on the side.
     # i = now, which would be 0 at this time.
     # this is why the categories start at 1.
@@ -145,6 +182,45 @@ def initialize(i, w):
 #     print(f"realCal: {realCal}")
 #     print(f"gregCal: {gregCal}")
 #     # More debugging stuff
+
+#########################
+# You guys remember that practice exercise about calculating whether or not
+# somethings a leap year? I'm just gunna steal all of that real quick.  ~Stanley
+
+def is_year_leap(year):
+    if year % 4 != 0:
+        return False
+    elif year % 100 != 0:
+        return True
+    elif year % 400 != 0:
+        return False
+    else:
+        return True
+
+def days_in_month(year, month):
+    if month < 1 or month > 12:
+        return None
+    days = [31, 28, 31, 30, 31, 30, 31, 31, 30, 31, 30, 31]
+    res  = days[month - 1]
+    if month == 2 and is_year_leap(year):
+        res = 29
+    return res
+
+def day_of_year(year, month, day):
+    days = 0
+    for m in range(1, month):
+        md = days_in_month(year, m)
+        if md == None:
+            return None
+        days += md
+    md = days_in_month(year, month)
+    if day >= 1 and day <= md:
+        return days + day
+    else:
+        return None
+
+# lol, lmao.
+#######################
 
 # This exists to make monthlyExpenses easier to edit
 def tryFloat (i, j, a):
@@ -161,9 +237,9 @@ def tryFloat (i, j, a):
         print("Only integers or floats please.")
 
 # This writes the users answers into the current months section of the index.
-def monthlyExpenses(now):
-    j = now + 1
+def monthlyExpenses(w):
     global argue
+    j = w + 1
     
     if first == True:
         print("""
@@ -211,7 +287,74 @@ def displayBoard(board):
         print("|")
         print("+-----------" * (len(realCal)+1),"+", sep="", end="")
         # This does not create a new line because of the end="" section.
+
+def checkOverspending(pr, now):
     
+    global savings
+    
+    # now is the month index (0-based), but your data starts at column 1
+    month_index = now + 1
+        
+    # Yeah 'now' ended up being a bit of a clusterfuck
+    # like I wrote before I had some trouble with 'now' during tryFloat()
+    # I might fix it later. ~Stanley
+
+    try:
+        monthly_income = float(income)
+    except ValueError:
+        print("Income must be a number to check overspending.")
+        return
+
+    total_spent = 0
+    for i in range(len(categories)):
+        value = board[i][month_index]
+        if isinstance(value, (int, float)):
+            total_spent += value
+            # Oh, I havent seen the word 'isinstance' before, I'll have to learn what that does later. ~Stanley
+            
+    try:
+        if interval == 0:
+            total_spent = total_spent * days_in_month(thisYear, thisMonth)
+        elif interval == 1:
+            total_spent = total_spent * 4
+        elif interval == 2:
+            total_spent = total_spent * 2
+        elif interval == 3:
+            total_spent = total_spent * 1
+        elif interval == 4:
+            total_spent = total_spent / 12
+    except ValueError:
+        print("I genuinely don't know how you could break this.")
+        # technically, all this math is wrong because really whatever they say they get paid needs to be multiplied by how often they get paid.
+        # I stole some code from the leapyear exercises to cover this lmao.
+
+    if first == True:
+        savings = 0
+    savings = float(savings)
+    savings = savings + monthly_income - total_spent
+#     print(f"\nsavings: {savings}")
+    # If we want to add the ability to change what your income currently is, we also want to preserve the value from
+    # PREVIOUS months too. I've created the 'savings' variable so it can be preserved. ~Stanley
+
+    print(f"\nTotal spent this month: ${total_spent}")
+    print(f"Your income: ${monthly_income}")
+
+    if total_spent > monthly_income:
+        print("You overspent this month!")
+        print(f"You went over by ${total_spent - monthly_income}")
+        if first == False and savings > 0:
+            print(f"Luckily, you still had ${savings} left in your {savings}")
+        elif first == False and savings < 0:
+            print(f"You not only don't have savings, you're ${savings} in debt.")
+        elif first == False and savings == 0:
+            print("You also have exactly ${savings} in savings to fall back on.")
+            
+    else:
+        print("You're within your budget.")
+        print(f"You gained a total of ${monthly_income - total_spent} this {realCal[now]}.")
+        if first == False and savings > 0:
+            print(f"Your savings have grown to a total of ${savings}.")
+
 def keepGoing():
     while True:
         global finish, first
@@ -229,16 +372,58 @@ def keepGoing():
             break
         else:
             print("Sorry, didn't quite understand that.")
+            
+def fluctuate():
+    if first == False:
+        while True:
+            x = input("Has the rate at which you get paid changed?: ")
+            if x.lower() in agree:
+                print("Alright, we'll adjust it then.")
+                wagesQ()
+                break
+            elif x.lower() in disagree:
+                break
+            else:
+                print("Sorry, didn't quite understand that.")
+            
+        while True:
+            y = input("Has the amount of money you earn per paycheck changed?: ")
+            if y.lower() in agree:
+                print("Alright, we'll adjust it then.")
+                incomeQ()
+                break
+            elif x.lower() in disagree:
+                print(f"Okay, moving on then.")
+                break
+            else:
+                print("Sorry, didn't quite understand that.")
     
 def master():
-    global now
-    whoAmI(first)
+    global finish, first, now
+    
+    whoAmI()
+    monthQ()
+    yearQ()
+    wagesQ()
+    incomeQ()
+    
+#     print(f"name: {name}")
+#     print(f"password: {password}")
+#     print(f"interval: {interval}")
+#     print(f"thisMonth: {thisMonth}")
+#     print(f"thisYear: {thisYear}")
+#     print(f"payRate: {payRate}")
+#     print(f"income: {income}")
+#     # debugging stuff
+    
     keyRing(thisMonth)
-    initialize(now, thisMonth)
+    initialize(now)
     while True:
         if finish == False:
+            fluctuate()
             monthlyExpenses(now)
             displayBoard(board)
+            checkOverspending(interval, now)
             now += 1
             keepGoing()
             continue
