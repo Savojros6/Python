@@ -176,6 +176,7 @@ def wagesQ():
                         payRate = 2
                         payRate = int(payRate)
                         interval = frequency[payRate]
+                        break
                     elif l == frequency[3]:
                         print("Alright, you get paid monthly.")
                         payRate = 3
@@ -416,6 +417,10 @@ def fluctuate():
         
         # This is supposed to allow it to cycle to a new year without breaking
         # it also is supposed to clear the board
+        # This probably doesnt actually work tbh, clearing the board doesnt change
+        # where its reading the data the board is supposed to get from, and now would be
+        # outside its range, but if you just set now to 0 that would break anything else
+        # that calls 'now'. I might fix it later, i've spent too much time on this as it is.
         if now > 11:
             nowPlus 	= now + 1
             newYear		= nowPlus // 12
