@@ -332,6 +332,13 @@ def displayBoard(board):
         print("|")
         print("+-----------" * (len(realCal)+1),"+", sep="", end="")
         # This does not create a new line because of the end="" section.
+        
+        # According to my testing, this display breaks by the time you reach the 5th month.
+        # The row that broke was rent, but that was the only row I wrote "200" on, for every
+        # other row I wrote 4. Weirdly, it fixed itself once I progressed to next month
+        # What appears to happen is it appends one of the numbers to the dividing horizontal
+        # line above for some reason, this does not prevent the number from also displaying
+        # In the correct place, and seems purely cosmetic. idk why this happens.
 
 def checkOverspending(payRate, income, now, thisYear):
     
@@ -391,7 +398,7 @@ def checkOverspending(payRate, income, now, thisYear):
         print(f"You gained a total of ${income - total_spent} this {realCal[now]}.")
         if first == False and savings > 0:
             print(f"Your savings have grown to a total of ${savings}.")
-        print(f"now: {now}")
+        # print(f"now: {now}")
         # need this for debugging purposes
 
 def keepGoing():
@@ -421,11 +428,16 @@ def fluctuate():
         # where its reading the data the board is supposed to get from, and now would be
         # outside its range, but if you just set now to 0 that would break anything else
         # that calls 'now'. I might fix it later, i've spent too much time on this as it is.
+        
+        # After further testing I can confirm it does not actually work
+        # The current reason is an IndexError.
+        # However: this is very annoying to test
+        
         if now > 11:
             nowPlus 	= now + 1
             newYear		= nowPlus // 12
             thisYear 	= firstYear + newYear
-            for i in range (i+1, len(gregCal)+1):
+            for i in range (1, len(gregCal)+1):
                 for j in range (len(categories)):
                     board[i][j] = 0
         
