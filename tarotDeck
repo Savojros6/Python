@@ -353,6 +353,8 @@ def master():
                 break
         elif outOfCards == False and first == False and len(finishedDeck) != 0:
             again()
+            if keepGoing == False:
+                break
         else:
             pass    
         divine()
