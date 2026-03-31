@@ -327,7 +327,7 @@ def divine():
             discard.append(b)
             del finishedDeck[0]
         
-        print(f"{len(finishedDeck)} cards remaining.")
+        print(f"\n{len(finishedDeck)} cards remaining.")
                  
         if a == (len(tarotDeck)) and kind == "Tarot":
             print("\nGood luck divining the entire deck, smartass.")
