@@ -172,8 +172,6 @@ def mirror():
         print("Shuffling cards..")
     else:
         print("Reshuffling cards...")
-#         print(len(finishedDeck))
-#         print(len(tarotDeck))
     
     for a in range (len(tarotDeck)):
         b = crazyHand[a]
@@ -194,9 +192,6 @@ def mirror():
         else:
             finishedDeck.append(masterHand[i])
 
-#     print(f"masterHand: {masterHand}")
-#     print(f"crazyHand: {crazyHand}")
-#     print(f"coinflips: {coinflips}")
     del masterHand[:]
     del crazyHand[:]
     del coinflips[:]
@@ -264,10 +259,6 @@ def exhaust():
                 mean = mean +1
             else:
                 print("Fundamentally broken human being.")
-           
-#     print(f"{len(finishedDeck)}")
-#     print(first)
-#     print(keepGoing)
 
 # This is the actual 'drawing cards from a shuffled deck'
 # part of the code, its also a pain in the ass.
