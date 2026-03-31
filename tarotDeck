@@ -1,5 +1,7 @@
 from random import randint
 
+# There's definitely a better way to do this, especially given how repetative the words for increasing numbers are
+# tbh, can't be fucked right now. Maybe later.
 johnSmartass = {
     "one": 1, "two": 2, "three": 3, "four": 4, "five": 5, "six": 6, "seven": 7, "eight": 8, "nine": 9, "ten": 10,
     "eleven": 11, "twelve": 12, "thirteen": 13, "fourteen": 14, "fifteen": 15, "sixteen": 16, "seventeen": 17,
@@ -38,17 +40,25 @@ suits = ["Wands", "Cups", "Swords", "Pentacles"]
 pRanks = ["Ace", "Two", "Three", "Four", "Five", "Six", "Seven", "Eight", "Nine", "Ten", "Jack", "Queen", "King"] 
 pSuits = ["Spades", "Diamonds", "Clubs", "Hearts"]
 jokers = ["Joker", "Jester"]
+# in some games it matters which joker you have, which is why they have different names here.
 
 agree		= ["y", "yes", "okay", "ok", "sure", "alright", "agree", "accept", "do", "yeah", "ok fine", "okay fine", "fine"]
 disagree	= ["n", "no", "nope", "nah", "never", "stop", "quit", "exit", "don't", "disagree", "object", "protest"]
 
 minorArcana 	= []
+# suits + ranks
 tarotDeck		= []
+# the source deck
 masterHand		= []
+# temp ordered list
 crazyHand		= []
+# temp disordered list
 coinflips		= []
+# used to reverse cards
 finishedDeck	= []
+# the shuffled deck
 discard			= []
+# currently unused
 
 first		= True
 outOfCards	= False
@@ -57,6 +67,12 @@ keepGoing	= True
 ###############################################################
 # Everything above here is initial data
 
+# This puts the deck together. It stitches together the names of the
+# Minor suits from rank and suit lists, then its merged with another
+# list of any extra cards the deck might have.
+#
+# In theory, this could basically allow you to make new decks pretty much
+# arbitrarily. As long as it has the 3 lists its asking for.
 def deckBuilder(x,y,z):
     for i in range(len(x)):
         for j in range(len(y)):
@@ -65,7 +81,8 @@ def deckBuilder(x,y,z):
         tarotDeck.append(minorArcana[k])
     for l in range(len(z)):
         tarotDeck.append(z[l])
-        
+
+# Stuff that just needs to happen before anything else.
 def initialize():    
     global kind, mean
     kind = 0
@@ -119,6 +136,10 @@ def initialize():
             continue
 
 # This creates a list of the numbers 1 - 78 in a random order with no duplicates.
+# it uses that list to randomly select cards from an orderly list
+# to move them into a disorderly one. In order to do it more efficiently
+# it checks if the card is already there first, and it deletes it from
+# the original list so it wont read it again.
 def shuffle():
     if first == True:
         print("Shuffling cards.")
@@ -138,6 +159,12 @@ def shuffle():
         else:
             continue   
 
+# This sequence is necessary for the tarot cards to be able to be
+# drawn 'reversed' properly. However its necessary even without
+# that part. Since it moves crazyHands values into finishedDeck
+# a complete, shuffled deck of cards. This decks existance
+# is very temporary, since the values are really just purged and
+# recreated each shuffle.
 def mirror():
     global first
     if first == True:
@@ -173,7 +200,8 @@ def mirror():
     del crazyHand[:]
     del coinflips[:]
     del discard[:]
-    
+
+# just a check for when you want to stop
 def again():
     global first, outOfCards, keepGoing, mean
     answer = input("Do you want to keep going? ")
@@ -195,7 +223,9 @@ def again():
                 mean = mean +1
             else:
                 print("Fundamentally broken human being.")
-            
+
+# This is called whenever you confirm you do
+# want to reshuffle the deck
 def reset():
     global outOfCards
     print("Alright, reshuffling.")
@@ -208,6 +238,8 @@ def reset():
     shuffle()
     mirror()
 
+# this is the check that asks if you want
+# to reshuffle the deck
 def exhaust():
     global outOfCards, keepGoing, mean
     while True:
@@ -236,6 +268,8 @@ def exhaust():
 #     print(first)
 #     print(keepGoing)
 
+# This is the actual 'drawing cards from a shuffled deck'
+# part of the code, its also a pain in the ass.
 def divine():
     global first, outOfCards, keepGoing, kind, mean
     if first == True:
@@ -308,7 +342,6 @@ def divine():
 # Everything above here is function definitions
 
 def master():
-    
     global outOfCards, keepGoing
     initialize()
     shuffle()
@@ -323,6 +356,9 @@ def master():
         else:
             pass    
         divine()
+
+    
+master()
 
     
 master()
