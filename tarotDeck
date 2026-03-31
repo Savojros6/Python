@@ -205,8 +205,8 @@ def mirror():
 # just a check for when you want to stop
 def again():
     global first, outOfCards, keepGoing, mean
-    answer = input("Do you want to keep going? ")
     while True:
+        answer = input("Do you want to keep going? ")
         if answer.lower() in agree:
             keepGoing = True
             print("Alright.")
