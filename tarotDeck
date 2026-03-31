@@ -74,6 +74,7 @@ keepGoing	= True
 # In theory, this could basically allow you to make new decks pretty much
 # arbitrarily. As long as it has the 3 lists its asking for.
 def deckBuilder(x,y,z):
+    global minorArcana, tarotDeck
     for i in range(len(x)):
         for j in range(len(y)):
             minorArcana.append(x[i] + ' of ' + y[j])
