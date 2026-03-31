@@ -336,7 +336,7 @@ def divine():
             print("\nY'know, 54 pickup isn't really playable on pc.")
         
     if len(finishedDeck) == 0:
-        outOfCards == True
+        outOfCards = True
         
 ####################################################################################
 # Everything above here is function definitions
