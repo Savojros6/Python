@@ -1,61 +1,328 @@
 from random import randint
 
-ranks = ["Ace", "Two", "Three", "Four", "Five", "Six", "Seven", "Eight", "Nine", "Ten", "Page", "Knight", "Queen", "King"]
-suits = ["Wands", "Cups", "Swords", "Pentacles"]
+johnSmartass = {
+    "one": 1, "two": 2, "three": 3, "four": 4, "five": 5, "six": 6, "seven": 7, "eight": 8, "nine": 9, "ten": 10,
+    "eleven": 11, "twelve": 12, "thirteen": 13, "fourteen": 14, "fifteen": 15, "sixteen": 16, "seventeen": 17,
+    "eighteen": 18, "nineteen": 19, "twenty": 20, "twenty-one": 21, "twenty one": 21, "twenty-two": 22,
+    "twenty two": 22, "twenty-three": 23, "twenty three": 23, "twenty-four": 24, "twenty four": 24, "twenty-five": 25,
+    "twenty five": 25, "twenty-six": 26, "twenty six": 26, "twenty-seven": 27, "twenty seven": 27, "twenty-eight": 28,
+    "twenty eight": 28, "twenty-nine": 29, "twenty nine": 29, "thirty": 30, "thirty-one": 31, "thirty one": 31,
+    "thirty-two": 32, "thirty two": 32, "thirty-three": 33, "thirty three": 33, "thirty-four": 34, "thirty four": 34,
+    "thirty-five": 35, "thirty five": 35, "thirty-six": 36, "thirty six": 36, "thirty-seven": 37, "thirty seven": 37,
+    "thirty-eight": 38, "thirty eight": 38, "thirty-nine": 39, "thirty nine": 39, "forty": 40, "forty-one": 41,
+    "forty one": 41, "forty-two": 42, "forty two": 42, "forty-three": 43, "forty three": 43, "forty-four": 44,
+    "forty four": 44, "forty-five": 45, "forty five": 45, "forty-six": 46, "forty six": 46, "forty-seven": 47,
+    "forty seven": 47, "forty-eight": 48, "forty eight": 48, "forty-nine": 49, "forty nine": 49, "fifty": 50,
+    "fifty-one": 51, "fifty one": 51, "fifty-two": 52, "fifty two": 52, "fifty-three": 53, "fifty three": 53,
+    "fifty-four": 54, "fifty four": 54, "fifty-five": 55, "fifty five": 55, "fifty-six": 56, "fifty six": 56,
+    "fifty-seven": 57, "fifty seven": 57, "fifty-eight": 58, "fifty eight": 58, "fifty-nine": 59, "fifty nine": 59,
+    "sixty": 60, "sixty-one": 61, "sixty one": 61, "sixty-two": 62, "sixty two": 62, "sixty-three": 63,
+    "sixty three": 63, "sixty-four": 64, "sixty four": 64, "sixty-five": 65, "sixty five": 65, "sixty-six": 66,
+    "sixty six": 66, "sixty-seven": 67, "sixty seven": 67, "sixty-eight": 68, "sixty eight": 68, "sixty-nine": 69,
+    "sixty nine": 69, "seventy": 70, "seventy-one": 71, "seventy one": 71, "seventy-two": 72, "seventy two": 72,
+    "seventy-three": 73, "seventy three": 73, "seventy-four": 74, "seventy four": 74, "seventy-five": 75,
+    "seventy five": 75, "seventy-six": 76, "seventy six": 76, "seventy-seven": 77, "seventy seven": 77,
+    "seventy-eight": 78, "seventy eight": 78, 
+}
 
-# maybe I should've had ranks go up to 22 and filled anything past king with blanks and fit in the major arcana as another suit...
-
-i = 0
-j = 0
-
-# minorArcana = [[0 for ranks in range(14)] for suits in range(4)]
-# 
-# for i in range(len(ranks)):
-#     for j in range(len(suits)):
-#         minorArcana[j][i] = (ranks[i] + ' of ' + suits[j])
-# 
-# This is a functional index, it is not however: actually useful for making a tarot deck like I thought it would be.
-
-minorArcana = []
-        
-for i in range(len(ranks)):
-    for j in range(len(suits)):
-        minorArcana.append(ranks[i] + ' of ' + suits[j])
-        
-# print(f"This is cardFusion: {cardFusion}.")
-# print(f"This is minorArcana: {minorArcana[j][i]}.")
+yesOrNo = {"playing": 1, "playing cards":1, "tarot": 2, "tarot cards":2, "with":1, "without":2, "w/o": 2}
 
 majorArcana = ["0 - The Fool", "I - The Magician", "II - The High Priestess", "III - The Empress", "IV - The Emperor", "V - The Hierophant",
                "VI - The Lovers", "VII - The Chariot", "VIII - Justice", "IX - The Hermit", "X - Wheel of Fortune", "XI - Strength",
                "XII - The Hanged Man", "XIII - Death", "XIV - Temperance", "XV - The Devil", "XVI - The Tower", "XVII - The Stars",
                "XVIII - The Moon", "XIX - The Sun", "XX - Judgement", "XXI - The World"]
 
-tarotDeck = []
-tarotDeck = tarotDeck + minorArcana
-tarotDeck = tarotDeck + majorArcana
+ranks = ["Ace", "Two", "Three", "Four", "Five", "Six", "Seven", "Eight", "Nine", "Ten", "Page", "Knight", "Queen", "King"]
+suits = ["Wands", "Cups", "Swords", "Pentacles"]
 
-print(tarotDeck)
-print(len(tarotDeck))
+pRanks = ["Ace", "Two", "Three", "Four", "Five", "Six", "Seven", "Eight", "Nine", "Ten", "Jack", "Queen", "King"] 
+pSuits = ["Spades", "Diamonds", "Clubs", "Hearts"]
+jokers = ["Joker", "Jester"]
 
-coin = []
+agree		= ["y", "yes", "okay", "ok", "sure", "alright", "agree", "accept", "do", "yeah", "ok fine", "okay fine", "fine"]
+disagree	= ["n", "no", "nope", "nah", "never", "stop", "quit", "exit", "don't", "disagree", "object", "protest"]
 
-def coinflip():
-    for y in range(len(tarotDeck)):
-        coin.append(randint (0, 1))
+minorArcana 	= []
+tarotDeck		= []
+masterHand		= []
+crazyHand		= []
+coinflips		= []
+finishedDeck	= []
+discard			= []
+
+first		= True
+outOfCards	= False
+keepGoing	= True
+
+###############################################################
+# Everything above here is initial data
+
+def deckBuilder(x,y,z):
+    for i in range(len(x)):
+        for j in range(len(y)):
+            minorArcana.append(x[i] + ' of ' + y[j])
+    for k in range(len(minorArcana)):
+        tarotDeck.append(minorArcana[k])
+    for l in range(len(z)):
+        tarotDeck.append(z[l])
         
-# this creates a list of 78 coinflip results, but I don't believe that that's a smart way to do this.
-        
-coinflip()
+def initialize():    
+    global kind, mean
+    kind = 0
+    mean = 0
+    
+    while True:
+        a = input("Playing cards or tarot cards?\n").strip()   
+        try:
+            a = int(a)
+        except ValueError:
+            pass
+            
+        if isinstance (a, str):
+            if a in disagree:
+                print("wtfug?? why're you even here?!")
+                
+            elif a in yesOrNo:
+                babble		= a.lower()
+                abababa		= yesOrNo[babble]
+                cardCounter	= int(abababa)
+                a = cardCounter
+        try:
+            if a == 1:
+                print("Playing cards it is then.")
+                b = pRanks
+                c = pSuits
+                d = jokers
+                kind = "Playing"
+                deckBuilder(b,c,d)
+                break
+                
+            elif a == 2:
+                print("Tarot cards it is then.")
+                b = ranks
+                c = suits
+                d = majorArcana
+                kind = "Tarot"
+                deckBuilder(b,c,d)
+                break 
+            else:
+                if mean == 0:
+                    print("That's not one of the options.")
+                    mean = mean +1
+                elif mean == 1:
+                    print("Incomphrehensible.")
+                    mean = mean +1
+                else:
+                    print("Fundamentally broken human being.")
+                continue
+        except:
+            continue
 
-print(coin)
+# This creates a list of the numbers 1 - 78 in a random order with no duplicates.
+def shuffle():
+    if first == True:
+        print("Shuffling cards.")
+    else:
+        print("Reshuffling cards..")
 
-for q in range(len(tarotDeck)):
-    if coin == 0:
-        tarotDeck[q] = tarotDeck[q] + " (Reversed)"        
-        q += 1
-    else:        
-        q += 1
+    masterHand = [i + 1 for i in range (len(tarotDeck))]
+    while len(crazyHand) != len(tarotDeck):  
+        x = len(masterHand)
+        c = randint (0, x)
+        if c not in crazyHand and c == x and x > 0:
+            continue 
+        elif c not in crazyHand and c != x and x > 0:
+            d = masterHand[c]
+            crazyHand.append(d)
+            del masterHand[c]
+        else:
+            continue   
+
+def mirror():
+    global first
+    if first == True:
+        print("Shuffling cards..")
+    else:
+        print("Reshuffling cards...")
+#         print(len(finishedDeck))
+#         print(len(tarotDeck))
+    
+    for a in range (len(tarotDeck)):
+        b = crazyHand[a]
+        b = b - 1
         
-# this doesn't work yet.
+        # this means this is the random card corresponding to the numbers randomized before
+        # it has to be 1 lower because '78' exceeds the length of the array below.
+        c = tarotDeck[b]
+        # this is now actively selecting one random card                
+        masterHand.append(c)
+        # this is writing this random order to the masterHand list
+
+    for i in range(len(tarotDeck)):
+        x = randint (0, 1)
+        coinflips.append(x)           
+        if coinflips[i] == 1 and kind ==  "Tarot":
+            finishedDeck.append(f"{masterHand[i]} - (Reversed)")
+        else:
+            finishedDeck.append(masterHand[i])
+
+#     print(f"masterHand: {masterHand}")
+#     print(f"crazyHand: {crazyHand}")
+#     print(f"coinflips: {coinflips}")
+    del masterHand[:]
+    del crazyHand[:]
+    del coinflips[:]
+    del discard[:]
+    
+def again():
+    global first, outOfCards, keepGoing, mean
+    answer = input("Do you want to keep going? ")
+    while True:
+        if answer in agree:
+            keepGoing = True
+            print("Alright.")
+            break
+        elif answer in disagree:
+            keepGoing = False
+            print("Alright, later then.")
+            break
+        else:
+            if mean == 0:
+                print("That's not one of the options.")
+                mean = mean +1
+            elif mean == 1:
+                print("Incomphrehensible.")
+                mean = mean +1
+            else:
+                print("Fundamentally broken human being.")
+            
+def reset():
+    global outOfCards
+    print("Alright, reshuffling.")
+    outOfCards = False
+    for d in range(len(finishedDeck)):
+        d = finishedDeck[0]
+        discard.append(d)
+        del finishedDeck[0]
+    print("Reshuffling cards.")
+    shuffle()
+    mirror()
+
+def exhaust():
+    global outOfCards, keepGoing, mean
+    while True:
+        c = input("Do you want to reshuffle?\n")
+        if c in agree:
+            reset()
+            break
+        elif c in disagree and len(finishedDeck) > 0:
+            print("Alright.")
+            break
+        elif c in disagree:
+            print("Alright, later then.")
+            keepGoing = False
+            break
+        else:
+            if mean == 0:
+                print("That's not one of the options.")
+                mean = mean +1
+            elif mean == 1:
+                print("Incomphrehensible.")
+                mean = mean +1
+            else:
+                print("Fundamentally broken human being.")
+           
+#     print(f"{len(finishedDeck)}")
+#     print(first)
+#     print(keepGoing)
+
+def divine():
+    global first, outOfCards, keepGoing, kind, mean
+    if first == True:
+        print("Shuffling cards...")        
+    
+    if len(finishedDeck) != 0 and keepGoing == True:
+        while True:
+            if first == True:
+                a = input(f"How many {kind} cards would you like to draw? \n")
+            else:
+                a = input(f"How many {kind} cards? ") 
+                    
+            if a.lower() in johnSmartass:
+                babble		= a
+                abababa		= johnSmartass[babble]
+                cardCounter	= abababa
+                cardCounter	= int(cardCounter)
+                a = cardCounter
         
-print(tarotDeck)
+            if a in disagree:
+                print("wtfug?? mean!")
+                first = False
+
+            try:
+                a = int(a)
+                if a <= 0:
+                    first = False
+                    print("A positive number.")
+                    continue      
+                elif a > len(finishedDeck) and len(finishedDeck) == len(tarotDeck):
+                    first = False
+                    print(f"The {kind} deck only has {len(tarotDeck)} cards!")
+                    continue
+                elif a > len(finishedDeck) and len(finishedDeck) < len(tarotDeck):
+                    first = False
+                    print("There aren't that many cards left in the deck.")
+                    exhaust()
+                    continue
+                else:
+                    break
+            except ValueError:
+                first = False  
+                print("That isn't a number.")
+                continue
+
+    if keepGoing == True and outOfCards == False and len(finishedDeck) != 0:
+        first = False
+        g = a
+        for g in range(a):
+            print(f"Card {g+1}: {finishedDeck[g]}")
+
+        g = a
+        for g in range(a):
+            b = finishedDeck[0]
+            discard.append(b)
+            del finishedDeck[0]
+        
+        print(f"{len(finishedDeck)} cards remaining.")
+                 
+        if a == (len(tarotDeck)) and kind == "Tarot":
+            print("\nGood luck divining the entire deck, smartass.")
+            
+        elif a == (len(tarotDeck)) and kind == "Playing":
+            print("\nY'know, 54 pickup isn't really playable on pc.")
+        
+    if len(finishedDeck) == 0:
+        outOfCards == True
+        
+####################################################################################
+# Everything above here is function definitions
+
+def master():
+    
+    global outOfCards, keepGoing
+    initialize()
+    shuffle()
+    mirror()
+    while True:
+        if outOfCards == True or len(finishedDeck) == 0:
+            exhaust()
+            if keepGoing == False:
+                break
+        elif outOfCards == False and first == False and len(finishedDeck) != 0:
+            again()
+        else:
+            pass    
+        divine()
+
+    
+master()
