@@ -95,9 +95,8 @@ def initialize():
         except ValueError:
             pass
             
-        if isinstance (a, str):
-            if a.lower() in disagree:
-                print("wtfug?? why're you even here?!")
+        if isinstance (a, str) and a.lower() in disagree:
+            print("wtfug?? why're you even here?!")
                 
             elif a.lower() in yesOrNo:
                 babble		= a.lower()
