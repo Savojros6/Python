@@ -96,10 +96,10 @@ def initialize():
             pass
             
         if isinstance (a, str):
-            if a in disagree:
+            if a.lower() in disagree:
                 print("wtfug?? why're you even here?!")
                 
-            elif a in yesOrNo:
+            elif a.lower() in yesOrNo:
                 babble		= a.lower()
                 abababa		= yesOrNo[babble]
                 cardCounter	= int(abababa)
@@ -141,6 +141,7 @@ def initialize():
 # it checks if the card is already there first, and it deletes it from
 # the original list so it wont read it again.
 def shuffle():
+    global masterHand, crazyHand, finishedDeck
     if first == True:
         print("Shuffling cards.")
     else:
@@ -166,7 +167,7 @@ def shuffle():
 # is very temporary, since the values are really just purged and
 # recreated each shuffle.
 def mirror():
-    global first
+    global first, masterHand, crazyHand, tarotDeck, coinflips, finishedDeck, discard
     if first == True:
         print("Shuffling cards..")
     else:
@@ -206,11 +207,11 @@ def again():
     global first, outOfCards, keepGoing, mean
     answer = input("Do you want to keep going? ")
     while True:
-        if answer in agree:
+        if answer.lower() in agree:
             keepGoing = True
             print("Alright.")
             break
-        elif answer in disagree:
+        elif answer.lower() in disagree:
             keepGoing = False
             print("Alright, later then.")
             break
@@ -227,7 +228,7 @@ def again():
 # This is called whenever you confirm you do
 # want to reshuffle the deck
 def reset():
-    global outOfCards
+    global outOfCards, finishedDeck
     print("Alright, reshuffling.")
     outOfCards = False
     for d in range(len(finishedDeck)):
@@ -241,16 +242,16 @@ def reset():
 # this is the check that asks if you want
 # to reshuffle the deck
 def exhaust():
-    global outOfCards, keepGoing, mean
+    global outOfCards, keepGoing, mean, finishedDeck
     while True:
         c = input("Do you want to reshuffle?\n")
-        if c in agree:
+        if c.lower() in agree:
             reset()
             break
-        elif c in disagree and len(finishedDeck) > 0:
+        elif c.lower() in disagree and len(finishedDeck) > 0:
             print("Alright.")
             break
-        elif c in disagree:
+        elif c.lower() in disagree:
             print("Alright, later then.")
             keepGoing = False
             break
@@ -283,13 +284,13 @@ def divine():
                 a = input(f"How many {kind} cards? ") 
                     
             if a.lower() in johnSmartass:
-                babble		= a
+                babble		= a.lower()
                 abababa		= johnSmartass[babble]
                 cardCounter	= abababa
                 cardCounter	= int(cardCounter)
                 a = cardCounter
         
-            if a in disagree:
+            if isinstance(a, str) and a.lower() in disagree:
                 print("wtfug?? mean!")
                 first = False
 
@@ -317,12 +318,11 @@ def divine():
 
     if keepGoing == True and outOfCards == False and len(finishedDeck) != 0:
         first = False
-        g = a
-        for g in range(a):
+        g=a
+        for g in range(g):
             print(f"Card {g+1}: {finishedDeck[g]}")
-
-        g = a
-        for g in range(a):
+        g=a
+        for g in range(g):
             b = finishedDeck[0]
             discard.append(b)
             del finishedDeck[0]
@@ -358,6 +358,5 @@ def master():
         else:
             pass    
         divine()
-
     
 master()
