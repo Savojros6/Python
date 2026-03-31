@@ -99,7 +99,7 @@ def initialize():
         if isinstance (a, str) and a.lower() in disagree:
             print("wtfug?? why're you even here?!")
                 
-            elif a.lower() in yesOrNo:
+            elif isinstance(a, str) and a.lower() in yesOrNo:
                 babble		= a.lower()
                 abababa		= yesOrNo[babble]
                 cardCounter	= int(abababa)
@@ -283,7 +283,7 @@ def divine():
             else:
                 a = input(f"How many {kind} cards? ") 
                     
-            if a.lower() in johnSmartass:
+            if isinstance(a, str) and a.lower() in johnSmartass:
                 babble		= a.lower()
                 abababa		= johnSmartass[babble]
                 cardCounter	= abababa
