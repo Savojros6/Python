@@ -1,0 +1,866 @@
+# Okay so here is the most important thing to know about actually USING this code with other code blocks 
+# This code fills slot 0 of each of the 'categories' lists with the NAME of that category, so it 
+# looks better on the big chart I setup. For that reason, to actually get the NUMBERS you gotta 
+# actually start at 1. rent[1], food[1], etc 
+
+# == USING MY INDEX== 
+# you can pull values from the 'board' index with board[i][j] 
+# with j being the month and i being the category. 
+# I'm using these for formatting/kickstarting the program. 
+
+categories		= ["Rent", "Food", "Utilities", "Insurance", "Subscri...", "Enterta...", "Other"] 
+frequency		= ["daily", "weekly", "biweekly", "monthly", "yearly"] 
+gregCal			= ["January", "February", "March", "April", "May", "June", "July", "August", 
+                   "September", "October", "November", "December"] 
+
+# Yes I made a whole dictionary just to convert the months to numbers 
+# However it will make receiving more inputs easier 
+# tbh i didnt know how to use a dictionary before now lol 
+
+monthDict = { 
+    # January 
+    "1": "1", "January": "1", "Jan": "1", "january": "1", "jan": "1", 
+    # February 
+    "2": "2", "February": "2", "Feb": "2", "february": "2", "feb": "2", 
+    # March 
+    "3": "3", "March": "3", "Mar": "3", "march": "3", "mar": "3", 
+    # April 
+    "4": "4", "April": "4", "Apr": "4", "april": "4", "apr": "4", 
+    # May 
+    "5": "5", "May": "5", "may": "5", 
+    # June 
+
+first  = True 
+# checks if you've filled out any previous months. 
+
+board = [ [0 for userMonths in range(len(gregCal)+1)] for userPurchases in range(len(categories)) ] 
+
+def keyRing(month): 
+    global clockHand 
+    redKey		= month 
+    blueKey		= monthDict[redKey] 
+    clockHand	= blueKey 
+    clockHand	= int(clockHand) 
+    # This is to convert month names to numbers from monthDict 
+
+def monthQ(): 
+    global thisMonth 
+    while True: 
+        try: 
+            u = input("What month is it right now? ") 
+            if u in monthDict: 
+                thisMonth = u 
+                break 
+        except ValueError: 
+            print("This is a required question, what's the month? ")     
+            # This part has no error handling at the moment, its a bit of a problem. 
+
+def yearQ(): 
+    global thisYear, firstYear       
+    while True: 
+        try: 
+            thisYear = input("What year is it right now? ") 
+            if thisYear in disagree: 
+                print(f"What do you mean {thisYear}? Its a required question! >:(")  
+            thisYear = int(thisYear) 
+            if first == True: 
+                firstYear = thisYear 
+            if thisYear <= 0: 
+                print("You are not using this program before the birth of Christ. Try again.") 
+            elif thisYear > 9999: 
+                print("This program has not survived for eight millenia. Try again.") 
+            elif thisYear > 0 and thisYear < 1582: 
+                print("This program does not predate the Gregorian calendar. Try again.") 
+            elif thisYear > 1582 and thisYear < 2025: 
+                print("This program did not exist at that time. Try again.") 
+            else: 
+                break 
+
+        except ValueError: 
+            print("This is a required question, what's the year? ") 
+            # This part has no error handling at the moment, its a bit of a problem. 
+
+def wagesQ(): 
+    global interval, payRate 
+    while True: 
+        try: 
+            interval = input(f"Alright {name}, how often do you get paid? (Daily, Weekly, Biweekly, Monthly, Yearly): ").strip()   
+            l = interval.lower() 
+            print(f"l: {l}") 
+            if l == frequency[0]: 
+                print("Alright, you get paid daily.") 
+                payRate = 0 
+                payRate = int(payRate) 
+                interval = frequency[payRate] 
+                break 
+
+            elif l == frequency[1]: 
+                print("Alright, you get paid weekly.") 
+                payRate = 1 
+                payRate = int(payRate) 
+                interval = frequency[payRate] 
+                break 
+
+            elif l == frequency[2]: 
+                print("Alright, you get paid biweekly.") 
+                payRate = 2 
+                payRate = int(payRate) 
+                interval = frequency[payRate] 
+                break 
+
+            elif l == frequency[3]: 
+                print("Alright, you get paid monthly.") 
+                payRate = 3 
+                payRate = int(payRate) 
+                interval = frequency[payRate] 
+                break 
+
+            elif l == frequency[4]: 
+                print("Alright, you get paid yearly.") 
+                payRate = 4 
+                payRate = int(payRate) 
+                interval = frequency[payRate] 
+                break 
+
+            elif l in rateDict: 
+                try: 
+                    greenKey 	= l 
+                    yellowKey 	= rateDict[greenKey] 
+                    l 			= yellowKey 
+                    if l == frequency[0]: 
+                        print("Alright, you get paid daily.") 
+                        payRate = 0 
+                        payRate = int(payRate) 
+                        payRate = 2 
+                        payRate = int(payRate) 
+                        interval = frequency[payRate] 
+                        break 
+
+                    elif l == frequency[3]: 
+                        print("Alright, you get paid monthly.") 
+                        payRate = 3 
+                        payRate = int(payRate) 
+                        interval = frequency[payRate] 
+                        break 
+
+                    elif l == frequency[4]: 
+                        print("Alright, you get paid yearly.") 
+                        payRate = 4 
+                        payRate = int(payRate) 
+                        interval = frequency[payRate] 
+                        break 
+
+                except ValueError: 
+                    continue 
+
+        except ValueError: 
+            print("Sorry, that isn't one of the supported options. Please try again.") 
+            print("(Options are: Daily, Weekly, Biweekly, Monthly, Yearly.)")  
+
+def incomeQ(): 
+    global income 
+    while True: 
+        income = input(f"How much {interval.lower()} income do you receive?: ")    
+        try: 
+            v = income 
+            v = float(v) 
+            income = v 
+            break 
+
+        except ValueError: 
+            print(f"This is a required question, how much {interval.lower()} income do you receive? ") 
+            # This part has no error handling at the moment, its a bit of a problem. 
+
+def load_data(target_name): 
+    # Added thisMonth, income, payRate, and interval to the global list 
+    global name, board, savings, thisYear, now, first, thisMonth, income, payRate, interval 
+    filename = f"{target_name}_budget.json" 
+
+    if os.path.exists(filename): 
+        with open(filename, "r") as f: 
+            data = json.load(f) 
+            name = data["name"] 
+            board = data["board"] 
+            savings = data["savings"] 
+            thisYear = data["year"] 
+            now = data["current_month_index"] 
+            # These lines pull your financial info back into the program 
+
+            income = data.get("income", 0) 
+            payRate = data.get("payRate", 3) 
+            interval = data.get("interval", "monthly") 
+            thisMonth = data["thisMonth"] 
+
+            # --- THE MAGIC FIX --- 
+            # These must be called AFTER thisMonth and now are loaded 
+            keyRing(thisMonth) 
+            initialize(now) 
+            # --------------------- 
+
+            first = False  
+
+        print(f"\n[SYSTEM] Welcome back, {name}! Data loaded successfully.") 
+        return True 
+    return False 
+
+def whoAmI(): 
+    global name, password 
+    name 		= input("Enter Username: ").strip() 
+    password 	= input("Enter Password: ") 
+
+    #this will look for the file 
+    if load_data(name): 
+        first = False 
+    else: 
+        first = True 
+
+#adding save and load functions :) 
+import json 
+import os 
+
+def save_data(): 
+    global name, board, savings, thisYear, now, income, payRate, interval, thisMonth 
+    data = { 
+        "name": name, 
+        "board": board, 
+        "savings": savings, 
+        "year": thisYear, 
+        "current_month_index": now, 
+        "income": income, 
+        "payRate": payRate, 
+        "interval": interval, 
+        "thisMonth": thisMonth 
+    } 
+
+    filename = f"{name}_budget.json" 
+    with open(filename, "w") as f: 
+        json.dump(data, f) 
+
+    print(f"\n[SYSTEM] Progress saved to {filename}!") 
+
+def initialize(i): 
+    #     print(f"name: {name}") 
+    #     print(f"password: {password}") 
+    #     print(f"interval: {interval}") 
+    #     print(f"thisMonth: {thisMonth}") 
+    #     print(f"income: {income}") 
+    #     print(f"clockHand: {clockHand}") 
+    #     # debugging stuff 
+ 
+    # deleting for now to see if it fixes my bug. 
+    # for a in range(len(categories)):    
+        #board[a][i] = categories[a]            
+    # This is so the fancy spreadsheet has the categories on the side. 
+    # i = now, which would be 0 at this time. 
+    # this is why the categories start at 1. 
+
+    for x in range(len(gregCal)): 
+        a = x - clockHand + 1 
+        realCal[a] = gregCal[x] 
+        # This is to update the order of the months so the current month is first 
+        # This was a major pain in the ass to make. 
+
+#     print(f"realCal: {realCal}") 
+#     print(f"gregCal: {gregCal}") 
+#     # More debugging stuff 
+
+######################### 
+
+# You guys remember that practice exercise about calculating whether or not 
+# somethings a leap year? I'm just gunna steal all of that real quick.  ~Stanley 
+
+def is_year_leap(year): 
+    if year % 4 != 0: 
+        return False 
+    elif year % 100 != 0: 
+        return True        interval = frequency[payRate] 
+                        break 
+
+                    elif l == frequency[1]: 
+                        print("Alright, you get paid weekly.") 
+                        payRate = 1 
+                        payRate = int(payRate) 
+                        interval = frequency[payRate] 
+                        break 
+
+                    elif l == frequency[2]: 
+                        print("Alright, you get paid biweekly.") 
+                        payRate = 2 
+                        payRate = int(payRate) 
+                        interval = frequency[payRate] 
+                        break 
+
+                    elif l == frequency[3]: 
+                        print("Alright, you get paid monthly.") 
+                        payRate = 3 
+                        payRate = int(payRate) 
+                        interval = frequency[payRate] 
+                        break 
+
+                    elif l == frequency[4]: 
+                        print("Alright, you get paid yearly.") 
+                        payRate = 4 
+                        payRate = int(payRate) 
+                        interval = frequency[payRate] 
+                        break 
+
+                except ValueError: 
+                    continue 
+
+        except ValueError: 
+            print("Sorry, that isn't one of the supported options. Please try again.") 
+            print("(Options are: Daily, Weekly, Biweekly, Monthly, Yearly.)")  
+
+def incomeQ(): 
+    global income 
+    while True: 
+        income = input(f"How much {interval.lower()} income do you receive?: ")    
+        try: 
+            v = income 
+            v = float(v) 
+            income = v 
+            break 
+
+        except ValueError: 
+            print(f"This is a required question, how much {interval.lower()} income do you receive? ") 
+            # This part has no error handling at the moment, its a bit of a problem. 
+
+def load_data(target_name): 
+    # Added thisMonth, income, payRate, and interval to the global list 
+    global name, board, savings, thisYear, now, first, thisMonth, income, payRate, interval 
+    filename = f"{target_name}_budget.json" 
+
+    if os.path.exists(filename): 
+        with open(filename, "r") as f: 
+            data = json.load(f) 
+            name = data["name"] 
+            board = data["board"] 
+            savings = data["savings"] 
+            thisYear = data["year"] 
+            now = data["current_month_index"] 
+            # These lines pull your financial info back into the program 
+
+            income = data.get("income", 0) 
+            payRate = data.get("payRate", 3) 
+            interval = data.get("interval", "monthly") 
+            thisMonth = data["thisMonth"] 
+
+            # --- THE MAGIC FIX --- 
+            # These must be called AFTER thisMonth and now are loaded 
+            keyRing(thisMonth) 
+            initialize(now) 
+            # --------------------- 
+
+            first = False  
+
+        print(f"\n[SYSTEM] Welcome back, {name}! Data loaded successfully.") 
+        return True 
+    return False 
+
+def whoAmI(): 
+    global name, password 
+    name 		= input("Enter Username: ").strip() 
+    password 	= input("Enter Password: ") 
+
+    #this will look for the file 
+    if load_data(name): 
+        first = False 
+    else: 
+        first = True 
+
+#adding save and load functions :) 
+import json 
+import os 
+
+def save_data(): 
+    global name, board, savings, thisYear, now, income, payRate, interval, thisMonth 
+    data = { 
+        "name": name, 
+        "board": board, 
+        "savings": savings, 
+        "year": thisYear, 
+        "current_month_index": now, 
+        "income": income, 
+        "payRate": payRate, 
+        "interval": interval, 
+        "thisMonth": thisMonth 
+    } 
+
+    filename = f"{name}_budget.json" 
+    with open(filename, "w") as f: 
+        json.dump(data, f) 
+
+    print(f"\n[SYSTEM] Progress saved to {filename}!") 
+
+def initialize(i): 
+    #     print(f"name: {name}") 
+    #     print(f"password: {password}") 
+    #     print(f"interval: {interval}") 
+    #     print(f"thisMonth: {thisMonth}") 
+    #     print(f"income: {income}") 
+    #     print(f"clockHand: {clockHand}") 
+    #     # debugging stuff 
+ 
+    # deleting for now to see if it fixes my bug. 
+    # for a in range(len(categories)):    
+        #board[a][i] = categories[a]            
+    # This is so the fancy spreadsheet has the categories on the side. 
+    # i = now, which would be 0 at this time. 
+    # this is why the categories start at 1. 
+
+    for x in range(len(gregCal)): 
+        a = x - clockHand + 1 
+        realCal[a] = gregCal[x] 
+        # This is to update the order of the months so the current month is first 
+        # This was a major pain in the ass to make. 
+
+#     print(f"realCal: {realCal}") 
+#     print(f"gregCal: {gregCal}") 
+#     # More debugging stuff 
+
+######################### 
+
+# You guys remember that practice exercise about calculating whether or not 
+# somethings a leap year? I'm just gunna steal all of that real quick.  ~Stanley 
+
+def is_year_leap(year): 
+    if year % 4 != 0: 
+        return False 
+    elif year % 100 != 0: 
+        return True     "6": "6", "June": "6", "Jun": "6", "june": "6", "jun": "6", 
+    # July 
+    "7": "7", "July": "7", "Jul": "7", "july": "7", "jul": "7", 
+    # August 
+    "8": "8", "August": "8", "Aug": "8", "august": "8", "aug": "8", 
+    # September 
+    "9": "9", "September": "9", "Sept": "9", "Sep": "9", "september": "9", "sept": "9", "sep": "9", 
+    # October 
+    "10": "10", "October": "10", "Oct": "10", "october": "10", "oct": "10", 
+    # November 
+    "11": "11", "November": "11", "Nov": "11", "november": "11", "nov": "11", 
+    # December 
+    "12": "12", "December": "12", "Dec": "12", "december": "12", "dec": "12", 
+    } 
+
+rateDict = { "1": "daily", "2": "weekly", "3": "biweekly", "4": "monthly", "5": "yearly"} 
+realCal = [i + 1 for i in range(len(gregCal))] 
+agree			= ["y", "yes", "okay", "ok", "sure", "alright", "agree", "accept", "do", "yeah", "ok fine", "okay fine", "fine"] 
+disagree		= ["n", "no", "nope", "nah", "never", "stop", "quit", "exit", "don't", "disagree", "object", "protest"] 
+
+# The actual data is stored in these lists. 
+
+rent			= [] 
+food			= [] 
+utilities		= [] 
+insurance		= [] 
+subscriptions	= [] 
+entertainment	= [] 
+other			= [] 
+
+now = 0 
+# This represents the current week/month, whichever its supposed to be 
+
+argue = 0 
+# This is a really hacky fix to a really annoying error 
+
+finish = False 
+# if this turns to True, the script stops. 
+
+first  = True 
+# checks if you've filled out any previous months. 
+
+board = [ [0 for userMonths in range(len(gregCal)+1)] for userPurchases in range(len(categories)) ] 
+
+def keyRing(month): 
+    global clockHand 
+    redKey		= month 
+    blueKey		= monthDict[redKey] 
+    clockHand	= blueKey 
+    clockHand	= int(clockHand) 
+    # This is to convert month names to numbers from monthDict 
+
+def monthQ(): 
+    global thisMonth 
+    while True: 
+        try: 
+            u = input("What month is it right now? ") 
+            if u in monthDict: 
+                thisMonth = u 
+                break 
+        except ValueError: 
+            print("This is a required question, what's the month? ")     
+            # This part has no error handling at the moment, its a bit of a problem. 
+
+def yearQ(): 
+    global thisYear, firstYear       
+    while True: 
+        try: 
+            thisYear = input("What year is it right now? ") 
+            if thisYear in disagree: 
+                print(f"What do you mean {thisYear}? Its a required question! >:(")  
+            thisYear = int(thisYear) 
+            if first == True: 
+                firstYear = thisYear 
+            if thisYear <= 0: 
+                print("You are not using this program before the birth of Christ. Try again.") 
+            elif thisYear > 9999: 
+                print("This program has not survived for eight millenia. Try again.") 
+            elif thisYear > 0 and thisYear < 1582: 
+                print("This program does not predate the Gregorian calendar. Try again.") 
+            elif thisYear > 1582 and thisYear < 2025: 
+                print("This program did not exist at that time. Try again.") 
+            else: 
+                break 
+
+        except ValueError: 
+            print("This is a required question, what's the year? ") 
+            # This part has no error handling at the moment, its a bit of a problem. 
+
+def wagesQ(): 
+    global interval, payRate 
+    while True: 
+        try: 
+            interval = input(f"Alright {name}, how often do you get paid? (Daily, Weekly, Biweekly, Monthly, Yearly): ").strip()   
+            l = interval.lower() 
+            print(f"l: {l}") 
+            if l == frequency[0]: 
+                print("Alright, you get paid daily.") 
+                payRate = 0 
+                payRate = int(payRate) 
+                interval = frequency[payRate] 
+                break 
+
+            elif l == frequency[1]: 
+                print("Alright, you get paid weekly.") 
+                payRate = 1 
+                payRate = int(payRate) 
+                interval = frequency[payRate] 
+                break 
+
+            elif l == frequency[2]: 
+                print("Alright, you get paid biweekly.") 
+                payRate = 2 
+                payRate = int(payRate) 
+                interval = frequency[payRate] 
+                break 
+
+            elif l == frequency[3]: 
+                print("Alright, you get paid monthly.") 
+                payRate = 3 
+                payRate = int(payRate) 
+                interval = frequency[payRate] 
+                break 
+
+            elif l == frequency[4]: 
+                print("Alright, you get paid yearly.") 
+                payRate = 4 
+                payRate = int(payRate) 
+                interval = frequency[payRate] 
+                break 
+
+            elif l in rateDict: 
+                try: 
+                    greenKey 	= l 
+                    yellowKey 	= rateDict[greenKey] 
+                    l 			= yellowKey 
+                    if l == frequency[0]: 
+                        print("Alright, you get paid daily.") 
+                        payRate = 0 
+                        payRate = int(payRate) 
+                        payRate = 2 
+                        payRate = int(payRate) 
+                        interval = frequency[payRate] 
+                        break 
+
+                    elif l == frequency[3]: 
+                        print("Alright, you get paid monthly.") 
+                        payRate = 3 
+                        payRate = int(payRate) 
+                        interval = frequency[payRate] 
+                        break 
+
+                    elif l == frequency[4]: 
+                        print("Alright, you get paid yearly.") 
+                        payRate = 4 
+                        payRate = int(payRate) 
+                        interval = frequency[payRate] 
+                        break 
+
+                except ValueError: 
+                    continue 
+
+        except ValueError: 
+            print("Sorry, that isn't one of the supported options. Please try again.") 
+            print("(Options are: Daily, Weekly, Biweekly, Monthly, Yearly.)")  
+
+def incomeQ(): 
+    global income 
+    while True: 
+        income = input(f"How much {interval.lower()} income do you receive?: ")    
+        try: 
+            v = income 
+            v = float(v) 
+            income = v 
+            break 
+
+        except ValueError: 
+            print(f"This is a required question, how much {interval.lower()} income do you receive? ") 
+            # This part has no error handling at the moment, its a bit of a problem. 
+
+def load_data(target_name): 
+    # Added thisMonth, income, payRate, and interval to the global list 
+    global name, board, savings, thisYear, now, first, thisMonth, income, payRate, interval 
+    filename = f"{target_name}_budget.json" 
+
+    if os.path.exists(filename): 
+        with open(filename, "r") as f: 
+            data = json.load(f) 
+            name = data["name"] 
+            board = data["board"] 
+            savings = data["savings"] 
+            thisYear = data["year"] 
+            now = data["current_month_index"] 
+            # These lines pull your financial info back into the program 
+
+            income = data.get("income", 0) 
+            payRate = data.get("payRate", 3) 
+            interval = data.get("interval", "monthly") 
+            thisMonth = data["thisMonth"] 
+
+            # --- THE MAGIC FIX --- 
+            # These must be called AFTER thisMonth and now are loaded 
+            keyRing(thisMonth) 
+            initialize(now) 
+            # --------------------- 
+
+            first = False  
+
+        print(f"\n[SYSTEM] Welcome back, {name}! Data loaded successfully.") 
+        return True 
+    return False 
+
+def whoAmI(): 
+    global name, password 
+    name 		= input("Enter Username: ").strip() 
+    password 	= input("Enter Password: ") 
+
+    #this will look for the file 
+    if load_data(name): 
+        first = False 
+    else: 
+        first = True 
+
+#adding save and load functions :) 
+import json 
+import os 
+
+def save_data(): 
+    global name, board, savings, thisYear, now, income, payRate, interval, thisMonth 
+    data = { 
+        "name": name, 
+        "board": board, 
+        "savings": savings, 
+        "year": thisYear, 
+        "current_month_index": now, 
+        "income": income, 
+        "payRate": payRate, 
+        "interval": interval, 
+        "thisMonth": thisMonth 
+    } 
+
+    filename = f"{name}_budget.json" 
+    with open(filename, "w") as f: 
+        json.dump(data, f) 
+
+    print(f"\n[SYSTEM] Progress saved to {filename}!") 
+
+def initialize(i): 
+    #     print(f"name: {name}") 
+    #     print(f"password: {password}") 
+    #     print(f"interval: {interval}") 
+    #     print(f"thisMonth: {thisMonth}") 
+    #     print(f"income: {income}") 
+    #     print(f"clockHand: {clockHand}") 
+    #     # debugging stuff 
+ 
+    # deleting for now to see if it fixes my bug. 
+    # for a in range(len(categories)):    
+        #board[a][i] = categories[a]            
+    # This is so the fancy spreadsheet has the categories on the side. 
+    # i = now, which would be 0 at this time. 
+    # this is why the categories start at 1. 
+
+    for x in range(len(gregCal)): 
+        a = x - clockHand + 1 
+        realCal[a] = gregCal[x] 
+        # This is to update the order of the months so the current month is first 
+        # This was a major pain in the ass to make. 
+
+#     print(f"realCal: {realCal}") 
+#     print(f"gregCal: {gregCal}") 
+#     # More debugging stuff 
+
+######################### 
+
+# You guys remember that practice exercise about calculating whether or not 
+# somethings a leap year? I'm just gunna steal all of that real quick.  ~Stanley 
+
+def is_year_leap(year): 
+    if year % 4 != 0: 
+        return False 
+    elif year % 100 != 0: 
+        return True        interval = frequency[payRate] 
+                        break 
+
+                    elif l == frequency[1]: 
+                        print("Alright, you get paid weekly.") 
+                        payRate = 1 
+                        payRate = int(payRate) 
+                        interval = frequency[payRate] 
+                        break 
+
+                    elif l == frequency[2]: 
+                        print("Alright, you get paid biweekly.") 
+                        payRate = 2 
+                        payRate = int(payRate) 
+                        interval = frequency[payRate] 
+                        break 
+
+                    elif l == frequency[3]: 
+                        print("Alright, you get paid monthly.") 
+                        payRate = 3 
+                        payRate = int(payRate) 
+                        interval = frequency[payRate] 
+                        break 
+
+                    elif l == frequency[4]: 
+                        print("Alright, you get paid yearly.") 
+                        payRate = 4 
+                        payRate = int(payRate) 
+                        interval = frequency[payRate] 
+                        break 
+
+                except ValueError: 
+                    continue 
+
+        except ValueError: 
+            print("Sorry, that isn't one of the supported options. Please try again.") 
+            print("(Options are: Daily, Weekly, Biweekly, Monthly, Yearly.)")  
+
+def incomeQ(): 
+    global income 
+    while True: 
+        income = input(f"How much {interval.lower()} income do you receive?: ")    
+        try: 
+            v = income 
+            v = float(v) 
+            income = v 
+            break 
+
+        except ValueError: 
+            print(f"This is a required question, how much {interval.lower()} income do you receive? ") 
+            # This part has no error handling at the moment, its a bit of a problem. 
+
+def load_data(target_name): 
+    # Added thisMonth, income, payRate, and interval to the global list 
+    global name, board, savings, thisYear, now, first, thisMonth, income, payRate, interval 
+    filename = f"{target_name}_budget.json" 
+
+    if os.path.exists(filename): 
+        with open(filename, "r") as f: 
+            data = json.load(f) 
+            name = data["name"] 
+            board = data["board"] 
+            savings = data["savings"] 
+            thisYear = data["year"] 
+            now = data["current_month_index"] 
+            # These lines pull your financial info back into the program 
+
+            income = data.get("income", 0) 
+            payRate = data.get("payRate", 3) 
+            interval = data.get("interval", "monthly") 
+            thisMonth = data["thisMonth"] 
+
+            # --- THE MAGIC FIX --- 
+            # These must be called AFTER thisMonth and now are loaded 
+            keyRing(thisMonth) 
+            initialize(now) 
+            # --------------------- 
+
+            first = False  
+
+        print(f"\n[SYSTEM] Welcome back, {name}! Data loaded successfully.") 
+        return True 
+    return False 
+
+def whoAmI(): 
+    global name, password 
+    name 		= input("Enter Username: ").strip() 
+    password 	= input("Enter Password: ") 
+
+    #this will look for the file 
+    if load_data(name): 
+        first = False 
+    else: 
+        first = True 
+
+#adding save and load functions :) 
+import json 
+import os 
+
+def save_data(): 
+    global name, board, savings, thisYear, now, income, payRate, interval, thisMonth 
+    data = { 
+        "name": name, 
+        "board": board, 
+        "savings": savings, 
+        "year": thisYear, 
+        "current_month_index": now, 
+        "income": income, 
+        "payRate": payRate, 
+        "interval": interval, 
+        "thisMonth": thisMonth 
+    } 
+
+    filename = f"{name}_budget.json" 
+    with open(filename, "w") as f: 
+        json.dump(data, f) 
+
+    print(f"\n[SYSTEM] Progress saved to {filename}!") 
+
+def initialize(i): 
+    #     print(f"name: {name}") 
+    #     print(f"password: {password}") 
+    #     print(f"interval: {interval}") 
+    #     print(f"thisMonth: {thisMonth}") 
+    #     print(f"income: {income}") 
+    #     print(f"clockHand: {clockHand}") 
+    #     # debugging stuff 
+ 
+    # deleting for now to see if it fixes my bug. 
+    # for a in range(len(categories)):    
+        #board[a][i] = categories[a]            
+    # This is so the fancy spreadsheet has the categories on the side. 
+    # i = now, which would be 0 at this time. 
+    # this is why the categories start at 1. 
+
+    for x in range(len(gregCal)): 
+        a = x - clockHand + 1 
+        realCal[a] = gregCal[x] 
+        # This is to update the order of the months so the current month is first 
+        # This was a major pain in the ass to make. 
+
+#     print(f"realCal: {realCal}") 
+#     print(f"gregCal: {gregCal}") 
+#     # More debugging stuff 
+
+######################### 
+
+# You guys remember that practice exercise about calculating whether or not 
+# somethings a leap year? I'm just gunna steal all of that real quick.  ~Stanley 
+
+def is_year_leap(year): 
+    if year % 4 != 0: 
+        return False 
+    elif year % 100 != 0: 
+        return True 
