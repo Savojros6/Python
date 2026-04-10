@@ -28,6 +28,20 @@ monthDict = {
     "4": "4", "April": "4", "Apr": "4", "april": "4", "apr": "4", 
 }
 
+
+#first change
+
+WeekDict = {
+    # Week 1
+    "1": "1", "Week1": "1", "Week 1": "1", "week1": "1", "week 1": "1",
+    # Week 2
+    "2": "2", "Week2": "2", "Week 2": "2", "week2": "2", "week 2": "2",
+    # Week 3
+    "3": "3", "Week3": "3", "Week 3": "3", "week3": "3", "week 3": "3",
+    # Week 4
+    "4": "4", "Week4": "4", "Week 4": "4", "week4": "4", "week 4": "4",
+    }
+
 first  = True 
 # checks if you've filled out any previous months. 
 
@@ -41,6 +55,37 @@ def keyRing(month):
     clockHand	= int(clockHand) 
     # This is to convert month names to numbers from monthDict 
 
+
+#second change
+
+def WeekQ():
+    global thisWeek
+    while True:
+        try:
+            u = input("which week is it right now? ")
+            if u in WeekDict:
+                thisWeek = u
+                break
+        except ValueError:
+            print("This is a required question, what's the Week? ")    
+
+#third change
+
+def yearQ():#new month
+    global thisYear, firstYear      
+    while True:
+        try:
+            thisYear = input("What Month is it right now? ")
+            thisYear = int(thisYear)
+            if first == True:
+                firstYear = thisYear
+                break
+        except ValueError:
+            print("This is a required question, what's the Month? ")
+            # This part has no error handling at the moment, its a bit of a problem.
+#I didn't change the year one since it would actually break everything.
+
+
 def monthQ(): 
     global thisMonth 
     while True: 
@@ -53,30 +98,32 @@ def monthQ():
             print("This is a required question, what's the month? ")     
             # This part has no error handling at the moment, its a bit of a problem. 
 
-def yearQ(): 
-    global thisYear, firstYear       
-    while True: 
-        try: 
-            thisYear = input("What year is it right now? ") 
-            if thisYear in disagree: 
-                print(f"What do you mean {thisYear}? Its a required question! >:(")  
-            thisYear = int(thisYear) 
-            if first == True: 
-                firstYear = thisYear 
-            if thisYear <= 0: 
-                print("You are not using this program before the birth of Christ. Try again.") 
-            elif thisYear > 9999: 
-                print("This program has not survived for eight millenia. Try again.") 
-            elif thisYear > 0 and thisYear < 1582: 
-                print("This program does not predate the Gregorian calendar. Try again.") 
-            elif thisYear > 1582 and thisYear < 2025: 
-                print("This program did not exist at that time. Try again.") 
-            else: 
-                break 
-
-        except ValueError: 
-            print("This is a required question, what's the year? ") 
-            # This part has no error handling at the moment, its a bit of a problem. 
+###########################################################################################
+# def yearQ(): 
+#     global thisYear, firstYear       
+#     while True: 
+#         try: 
+#             thisYear = input("What year is it right now? ") 
+#             if thisYear in disagree: 
+#                 print(f"What do you mean {thisYear}? Its a required question! >:(")  
+#             thisYear = int(thisYear) 
+#             if first == True: 
+#                 firstYear = thisYear 
+#             if thisYear <= 0: 
+#                 print("You are not using this program before the birth of Christ. Try again.") 
+#             elif thisYear > 9999: 
+#                 print("This program has not survived for eight millenia. Try again.") 
+#             elif thisYear > 0 and thisYear < 1582: 
+#                 print("This program does not predate the Gregorian calendar. Try again.") 
+#             elif thisYear > 1582 and thisYear < 2025: 
+#                 print("This program did not exist at that time. Try again.") 
+#             else: 
+#                 break 
+# 
+#         except ValueError: 
+#             print("This is a required question, what's the year? ") 
+#             # This part has no error handling at the moment, its a bit of a problem.
+###########################################################################################
 
 def wagesQ(): 
     global interval, payRate 
