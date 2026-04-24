@@ -1,0 +1,82 @@
+from turtle import *
+
+color("#000000")
+fillcolor("#EFE4B0")
+
+goto(-20,0)
+
+# Walls
+begin_fill()
+forward(120)
+left(90)
+forward(90)
+left(90)
+forward(120)
+left(90)
+forward(90)
+end_fill()
+
+# Door
+fillcolor("#B97A57")
+left(90)
+begin_fill()
+forward(50)
+left(90)
+forward(40)
+right(90)
+forward(20)
+right(90)
+forward(40)
+right(90)
+forward(20)
+end_fill()
+
+# Roof
+penup()
+right(90)
+forward(90)
+left(90)
+forward(50)
+fillcolor("#ED1C24")
+begin_fill()
+pendown()
+right(120)
+forward(120)
+right(120)
+forward(120)
+right(120)
+forward(120)
+end_fill()
+
+# Chimney
+fillcolor("#8E403A")
+begin_fill()
+right(120)
+forward(45)
+left(30)
+forward(50)
+right(90)
+forward(10)
+right(90)
+forward(50)
+right(90)
+forward(10)
+end_fill()
+
+# Windows
+penup()
+goto(-20,0)
+fillcolor("#99D9EA")
+right(90)
+forward(40)
+right(90)
+forward(25)
+
+# begin_fill()
+# pendown()
+# circle(10)
+
+# forward(90)
+# end_fill()
+# left(90)
+# forward()
